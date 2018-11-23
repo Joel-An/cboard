@@ -11,7 +11,7 @@ var app = express();
 
 // setup mongodb
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/project_board', {
+mongoose.connect('mongodb://localhost/cboard', {
   useNewUrlParser: true
 });
  
