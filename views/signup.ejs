@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ./layout/head %>
+</head>
+
+<body>
+    <% include ./layout/header %>
+
+    <div class="container">
+        <form action="/signup" method="post">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="name" />
+            </div>
+            <div>
+                <label>email:</label>
+                <input type="text" name="email" />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" />
+            </div>
+            <div>
+                <input type="submit" value="Sign Up" />
+            </div>
+        </form>
+    </div>
+
+    <% include ./layout/script %>
+</body>
+
+</html>
