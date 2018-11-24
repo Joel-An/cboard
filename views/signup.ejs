@@ -9,24 +9,32 @@
     <% include ./layout/header %>
 
     <div class="container">
-        <form action="/signup" method="post">
-            <div>
-                <label>Username:</label>
-                <input type="text" name="name" />
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-box well">
+                        <form accept-charset="UTF-8" role="form" method="post" action="/signup">
+                            <legend>회원가입</legend>
+                            <div class="form-group">
+                                <label for="email">이메일</label>
+                                <input name="email" value='' placeholder="E-mail" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                    <label for="email">이름</label>
+                                    <input name="name" value='' placeholder="Name" type="text" class="form-control" />
+                                </div>
+                            <div class="form-group">
+                                <label for="password">비밀번호</label>
+                                <input name="password" value='' placeholder="Password" type="password" class="form-control" />
+                            </div>
+                            <hr/>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md" value="회원가입" />
+                            </div>                                                        
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label>email:</label>
-                <input type="text" name="email" />
-            </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" name="password" />
-            </div>
-            <div>
-                <input type="submit" value="Sign Up" />
-            </div>
-        </form>
-    </div>
+        </div>
 
     <% include ./layout/script %>
 </body>

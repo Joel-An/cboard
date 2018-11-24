@@ -9,19 +9,31 @@
     <% include ./layout/header %>
 
     <div class="container">
-        <form action="/login" method="post">
-            <div>
-                <label>Email:</label>
-                <input type="text" name="email" />
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-box well">
+                    <form accept-charset="UTF-8" role="form" method="post" action="/login">
+                        <legend>로그인</legend>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input name="email" value='' placeholder="E-mail" type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">비밀번호</label>
+                            <input name="password" value='' placeholder="Password" type="password" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default btn-login-submit btn-block m-t-md" value="로그인" />
+                        </div>
+                        <span><a href="#" class="text-sm">비밀번호 찾기</a></span>
+                        <hr />
+                        <div class="form-group">
+                            <a href="/signup" class="btn btn-default btn-block m-t-md"> 회원가입</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" name="password" />
-            </div>
-            <div>
-                <input type="submit" value="Log In" />
-            </div>
-        </form>
+        </div>
     </div>
 
     <% include ./layout/script %>
