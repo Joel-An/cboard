@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('login');
+  res.render('login', { err: req.flash('err')});
 });
 
 router.get('/signup', function(req, res) {
@@ -20,4 +20,10 @@ router.post('/signup', passport.authenticate('signup', {
   failureRedirect : '/signup', //가입 실패시 redirect할 url주소
   failureFlash : true 
 }));
+router.post('/login', passport.authenticate('login', {
+  successRedirect : '/', 
+  failureRedirect : '/login',
+  failureFlash : true 
+}));
+
 module.exports = router;

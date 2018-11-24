@@ -46,9 +46,9 @@ module.exports = function(passport) {
             if (err)
                 return done(err);
             if (!user)
-                return done(null, false, req.flash('loginMessage', '사용자를 찾을 수 없습니다.'));
+                return done(null, false, req.flash('err', '사용자를 찾을 수 없습니다.'));
             if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', '비밀번호가 다릅니다.')); 
+                return done(null, false, req.flash('err', '비밀번호가 다릅니다.')); 
             return done(null, user);
         });
     }));
