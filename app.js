@@ -7,6 +7,9 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var session = require('express-session');
+var flash = require('connect-flash');
+
 var app = express();
 
 // setup mongodb
@@ -21,6 +24,16 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log('mongoDB is connected successfully');
 });
+
+// session setup
+
+app.use(session({
+    secret: 'session secret key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
