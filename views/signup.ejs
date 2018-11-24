@@ -32,9 +32,14 @@
                             </div>                                                        
                         </form>
                     </div>
+                    <% if(err != "") { %>
+                        <div class="alert alert-danger text-center">        
+                            <%= err %>
+                        </div>
+                    <% } %> 
                 </div>
-            </div>
-        </div>
+            </div>            
+        </div>        
 
     <% include ./layout/script %>
 </body>

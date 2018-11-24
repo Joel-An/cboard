@@ -18,16 +18,14 @@ module.exports = function(passport) {
     function(req, email, password, done) {        
         User.findOne({ 'email' : email }, function(err, user) {
             if (err) return done(err);
-            if (user) {
-                return done(null, false, req.flash('signupMessage', '이메일이 존재합니다.'));
-            } else {
-                console.log("NEW USER EMAIL : " + req.body.email);
 
+            if (user) {
+                return done(null, false, req.flash('err', '이미 사용중인 이메일입니다.'));
+            } else {
                 var newUser = new User();
                 newUser.name = req.body.name;
-                newUser.email = req.body.email;
+                newUser.email = email;
                 newUser.password = newUser.generateHash(password); 
-
                 
                 newUser.save(function(err) {
                     if (err)
