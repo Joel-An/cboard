@@ -3,6 +3,8 @@ var router = express.Router();
 
 var passport = require('passport');
 
+var Board = require('../models/board');
+
 function getUserInfo(req) {
   if (req.isAuthenticated()){
       return req.user;
@@ -25,6 +27,15 @@ router.get('/board/best', function(req, res){
   res.render('board/best', { user: getUserInfo(req) });
 });
 
+router.get('/write/:board', function(req, res){
+  var selectedBoard = req.params.board;
+  Board.find({boardType:'Normal'},{nameKor:1,nameEng:1},function(err,board){
+    if(err) console.log(err);
+
+    res.render('post/write', { user: getUserInfo(req),boardList:board ,selectedBoard: selectedBoard });    
+  });
+  
+});
 
 router.get('/login', function(req, res) {
   res.render('login', { user: getUserInfo(req), err: req.flash('err')});
