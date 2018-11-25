@@ -120,10 +120,12 @@ router.post('/publish/post', isLoggedin ,function(req, res) {
     newPost.save().then(function(savedPost) {
       res.redirect('/board/'+boardName);
     }).catch(function(err){
-      console.log(err);
-      res.redirect('/'); 
+      return err; 
     });    
-  });      
+  }).catch(function(err){
+    console.log(err);
+    res.redirect('/'); 
+  });        
 });
 
 
