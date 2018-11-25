@@ -54,10 +54,27 @@ router.get('/board/:boardName', function(req, res){
 });
 
 router.get('/board/:boardName/:id', function(req, res){
-  var posts = [];
   var boardName = req.params.boardName;
   var id = req.params.id;
-  res.redirect('/');
+
+  var getBoardInfo = Board.findOne({nameEng: boardName});
+  var getPost = Post.findById(id);
+  
+  /*
+    TODO: 게시판이 없을 경우 / 게시물이 없을 경우 에러처리를 달리해야함
+  */
+
+  Promise.all([getBoardInfo,getPost]).then(function(values) {
+    var boardInfo = values[0];
+    var post = values[1];
+
+    User.populate(post,{path: 'authorId', select: 'name'})
+      .then(function(populatedPost) {
+        res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: populatedPost , moment: moment});
+      });
+  }).catch(function(err){
+    res.redirect('/');
+  });  
 });
 
 router.get('/write/:boardName',isLoggedin ,function(req, res){
