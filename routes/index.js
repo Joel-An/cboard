@@ -17,7 +17,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/board/free', function(req, res){
-  res.render('board/free', { user: getUserInfo(req) });
+  var articles = [];
+  res.render('board/free', { user: getUserInfo(req), articles: articles});
 });
 
 router.get('/board/best', function(req, res){

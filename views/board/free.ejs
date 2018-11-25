@@ -7,7 +7,43 @@
     <% include ../layout/header %>   
 
     <div class="container">
-        자유게시판
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(articles.length > 0) { %>
+                    <% var i=0; %>
+                    <% articles.forEach(function(item) { %>
+                        <% i++ %>
+                        <tr>
+                            <td class="number"><%=item.number%></td>
+                            <td class="title"><a href="/board/free/<%=item._id%>"><%=item.title%></a></td>
+                            <td id="author" class="author"><%=item.author%></td>
+                            <td class="date"><%=moment(item.date).format('YY-MM-DD')%></td>
+                            <td class="viewed"><%=item.viewed%></td>
+                        </tr>
+                    <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+
+        <hr />
+        <a class="btn btn-default pull-right" href="/write/free">글쓰기</a>
+
+        <div class="text-center">
+            <ul class="pagination">
+                <li><a href='#'>1</a></li>
+                <li><a href='#'>2</a></li>
+                <li><a href='#'>3</a></li>
+            </ul>
+        </div>
     </div>
 
     <% include ../layout/script %>
