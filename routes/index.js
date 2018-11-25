@@ -3,7 +3,7 @@ var router = express.Router();
 
 var passport = require('passport');
 
-function isLoggedIn(req) {
+function getUserInfo(req) {
   if (req.isAuthenticated()){
       return req.user;
   } else {
@@ -12,16 +12,16 @@ function isLoggedIn(req) {
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {  
-  res.render('index', { user: isLoggedIn(req) });
+router.get('/', function(req, res) {  
+  res.render('index', { user: getUserInfo(req) });
 });
 
 router.get('/login', function(req, res) {
-  res.render('login', { user: isLoggedIn(req), err: req.flash('err')});
+  res.render('login', { user: getUserInfo(req), err: req.flash('err')});
 });
 
 router.get('/signup', function(req, res) {
-   res.render('signup', { user: isLoggedIn(req), err: req.flash('err')});
+   res.render('signup', { user: getUserInfo(req), err: req.flash('err')});
 });
 
 router.get('/logout', function(req, res) {  
