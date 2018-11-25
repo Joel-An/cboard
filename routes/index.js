@@ -16,6 +16,15 @@ router.get('/', function(req, res) {
   res.render('index', { user: getUserInfo(req) });
 });
 
+router.get('/board/free', function(req, res){
+  res.render('board/free', { user: getUserInfo(req) });
+});
+
+router.get('/board/best', function(req, res){
+  res.render('board/best', { user: getUserInfo(req) });
+});
+
+
 router.get('/login', function(req, res) {
   res.render('login', { user: getUserInfo(req), err: req.flash('err')});
 });
