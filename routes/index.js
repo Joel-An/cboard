@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 var passport = require('passport');
+var moment = require('moment');
 
 var Board = require('../models/board');
+var User = require('../models/user');
+var Post = require('../models/post');
 
 function getUserInfo(req) {
   if (req.isAuthenticated()){
@@ -26,9 +29,25 @@ router.get('/', function(req, res) {
 });
 
 router.get('/board/:boardName', function(req, res){
-  var posts = [];
   var boardName = req.params.boardName;
-  res.render('board/index', { user: getUserInfo(req), posts: posts, boardName: boardName});
+
+  var getBoardInfo = Board.findOne({nameEng: boardName}); 
+  var boardInfo;
+
+  getBoardInfo.then(function(result){
+    boardInfo = result;
+    return Post.find({boardId: boardInfo._id}).catch((err)=>console.log(err));
+  })
+  .then(function(posts){
+     User.populate(posts,{path: 'authorId', select: 'name'})
+    .then(function(populatedPosts){
+      res.render('board/index',{ user: getUserInfo(req), boardInfo: boardInfo, posts: populatedPosts , moment: moment});
+    }).catch(function(err) {
+      console.log(err);
+      res.redirect('/board/'+boardName);
+    });  
+  });
+    
 });
 
 router.get('/board/:boardName/:id', function(req, res){
@@ -79,19 +98,32 @@ router.post('/login', passport.authenticate('login', {
 
 router.post('/publish/post', isLoggedin ,function(req, res) {     
   var userId = req.user._id;
-  var userName = req.user.name;
+  var board = req.body.selectedBoard;
 
   var title = req.body.title;
   var contents = req.body.contents;
 
-  var board = req.body.selectedBoard;
-  
-  console.log(userId);
-  console.log(userName);
-  console.log(title);
-  console.log(contents);
-  console.log(board);
-  res.redirect('/');     
+  var getBoardInfo = Board.findOne({nameEng: board});
+  var getUserinfo = User.findOne({_id:userId});
+
+  Promise.all([getBoardInfo,getUserinfo]).then(function(values){
+    var newPost = new Post();
+
+    newPost.boardId = values[0]._id;
+    newPost.authorId = values[1]._id;
+
+    newPost.title = title;
+    newPost.contents = contents;
+    
+    var boardName = values[0].nameEng;
+
+    newPost.save().then(function(savedPost) {
+      res.redirect('/board/'+boardName);
+    }).catch(function(err){
+      console.log(err);
+      res.redirect('/'); 
+    });    
+  });      
 });
 
 

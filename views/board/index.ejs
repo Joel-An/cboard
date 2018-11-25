@@ -24,8 +24,8 @@
                         <% i++ %>
                         <tr>
                             <td class="number"><%=item.number%></td>
-                            <td class="title"><a href="/board/<%=boardName%>/<%=item._id%>"><%=item.title%></a></td>
-                            <td id="author" class="author"><%=item.author%></td>
+                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%></a></td>
+                            <td id="author" class="author"><%=item.authorId.name%></td>
                             <td class="date"><%=moment(item.date).format('YY-MM-DD')%></td>
                             <td class="viewed"><%=item.viewed%></td>
                         </tr>
@@ -35,7 +35,7 @@
         </table>
 
         <hr />
-        <a class="btn btn-default pull-right" href="/write/<%=boardName%>">글쓰기</a>
+        <a class="btn btn-default pull-right" href="/write/<%=boardInfo.nameEng%>">글쓰기</a>
 
         <div class="text-center">
             <ul class="pagination">
