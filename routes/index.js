@@ -35,17 +35,20 @@ router.get('/board/:boardName', function(req, res){
   var boardInfo;
 
   getBoardInfo.then(function(result){
+    if(result==null) {
+      throw "게시판이 존재하지 않습니다.";
+    }
     boardInfo = result;
-    return Post.find({boardId: boardInfo._id}).catch((err)=>console.log(err));
+    return Post.find({boardId: boardInfo._id});
   })
   .then(function(posts){
      User.populate(posts,{path: 'authorId', select: 'name'})
     .then(function(populatedPosts){
       res.render('board/index',{ user: getUserInfo(req), boardInfo: boardInfo, posts: populatedPosts , moment: moment});
-    }).catch(function(err) {
-      console.log(err);
-      res.redirect('/board/'+boardName);
     });  
+  }).catch(function(err) {    
+    res.redirect('/');
+    console.log(err);
   });
     
 });
