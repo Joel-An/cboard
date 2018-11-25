@@ -7,7 +7,41 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var passport = require('passport');
+var session = require('express-session');
+var flash = require('connect-flash');
+
 var app = express();
+
+// setup mongodb
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/cboard', {
+  useNewUrlParser: true
+});
+mongoose.Promise = global.Promise; 
+ 
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('mongoDB is connected successfully');
+});
+
+// session setup
+
+app.use(session({
+    secret: 'session secret key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(flash());
+
+
+// passport setup
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session()); //로그인 세션 유지
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <% include ./layout/head %>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <% include ./layout/header %>
+  
+    <div class="container">
+      <div>Main Page</div>
+    </div>  
+    
+    <% include ./layout/script %>
   </body>
 </html>
