@@ -18,17 +18,21 @@ router.get('/', function(req, res) {
   res.render('index', { user: getUserInfo(req) });
 });
 
-router.get('/board/free', function(req, res){
+router.get('/board/:boardName', function(req, res){
   var posts = [];
-  res.render('board/free', { user: getUserInfo(req), posts: posts});
+  var boardName = req.params.boardName;
+  res.render('board/index', { user: getUserInfo(req), posts: posts, boardName: boardName});
 });
 
-router.get('/board/best', function(req, res){
-  res.render('board/best', { user: getUserInfo(req) });
+router.get('/board/:boardName/:id', function(req, res){
+  var posts = [];
+  var boardName = req.params.boardName;
+  var id = req.params.id;
+  res.redirect('/');
 });
 
-router.get('/write/:board', function(req, res){
-  var selectedBoard = req.params.board;
+router.get('/write/:boardName', function(req, res){
+  var selectedBoard = req.params.boardName;
   Board.find({boardType:'Normal'},{nameKor:1,nameEng:1},function(err,board){
     if(err) console.log(err);
 
