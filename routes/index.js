@@ -77,4 +77,22 @@ router.post('/login', passport.authenticate('login', {
   failureFlash : true 
 }));
 
+router.post('/publish/post', isLoggedin ,function(req, res) {     
+  var userId = req.user._id;
+  var userName = req.user.name;
+
+  var title = req.body.title;
+  var contents = req.body.contents;
+
+  var board = req.body.selectedBoard;
+  
+  console.log(userId);
+  console.log(userName);
+  console.log(title);
+  console.log(contents);
+  console.log(board);
+  res.redirect('/');     
+});
+
+
 module.exports = router;
