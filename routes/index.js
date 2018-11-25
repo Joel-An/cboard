@@ -13,6 +13,13 @@ function getUserInfo(req) {
   }
 }
 
+function isLoggedin(req, res, next) {
+  if (req.isAuthenticated()){
+    return next();
+  }
+  res.redirect('/login');
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {  
   res.render('index', { user: getUserInfo(req) });
@@ -31,7 +38,7 @@ router.get('/board/:boardName/:id', function(req, res){
   res.redirect('/');
 });
 
-router.get('/write/:boardName', function(req, res){
+router.get('/write/:boardName',isLoggedin ,function(req, res){
   var selectedBoard = req.params.boardName;
   Board.find({boardType:'Normal'},{nameKor:1,nameEng:1},function(err,board){
     if(err) console.log(err);
