@@ -12,7 +12,7 @@ function getUserInfo(req) {
   if (req.isAuthenticated()){
       return req.user;
   } else {
-      return "Guest";
+      return {userType:"Guest"};
   }
 }
 
