@@ -5,7 +5,8 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = new Schema({
     name: String,
     email : String,
-    password : String
+    password : String,
+    userType: {type: String, enum:['Guest','User','Admin'], default: 'User'}
 });
 
 //password를 암호화
