@@ -104,6 +104,24 @@ router.get('/write/:boardName',isLoggedin ,function(req, res){
   
 });
 
+router.get('/modify/post',isLoggedin , function(req, res){
+  var boardName = req.query.boardName;
+  var postId = req.query.postId;
+
+  var getBoardInfo = Board.find({boardType:'Normal'});
+  var getPost = Post.findById(postId);
+
+  Promise.all([getBoardInfo,getPost]).then(function(values){
+    var boardList = values[0];
+    var post = values[1];
+
+    res.render('post/modify', { user: getUserInfo(req),boardList:boardList ,selectedBoard: boardName ,post:post});        
+  }).catch(function(err){
+    console.log(err);
+    res.redirect(getLastVisitedUrl(req)); 
+  });     
+});
+
 router.get('/login', function(req, res) {
   res.render('login', { user: getUserInfo(req), err: req.flash('err')});
 });

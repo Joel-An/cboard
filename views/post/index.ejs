@@ -22,7 +22,9 @@
             <input type="submit" class="btn btn-primary pull-right" value="목록">
         </form>
         <% if(user.id === post.authorId.id) { %>        
-        <form action="/modify/<%=post._id%>" method="get">
+        <form action="/modify/post" method="get">
+            <input type="hidden" name="boardName" value="<%=boardInfo.nameEng%>" />
+            <input type="hidden" name="postId" value="<%=post.id%>" />
             <input type="submit" class="btn btn-primary pull-right" value="수정">
         </form>
         <form action="/delete/post?_method=DELETE" method="post">                        
