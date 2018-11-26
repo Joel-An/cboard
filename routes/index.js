@@ -23,9 +23,22 @@ function isLoggedin(req, res, next) {
   res.redirect('/login');
 }
 
+function getLastVisitedUrl(req) {
+  if(req.session.lastVisitedPost)
+    return req.session.lastVisitedPost;
+  if(req.session.lastVisitedBoard)
+    return req.session.lastVisitedBoard;
+  
+  return '/'; 
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {  
   res.render('index', { user: getUserInfo(req) });
+});
+
+router.get('/done', function(req, res) {
+  res.redirect(getLastVisitedUrl(req));
 });
 
 router.get('/board/:boardName', function(req, res){
@@ -44,6 +57,8 @@ router.get('/board/:boardName', function(req, res){
   .then(function(posts){
      User.populate(posts,{path: 'authorId', select: 'name'})
     .then(function(populatedPosts){
+      req.session.lastVisitedBoard = req.url;
+      req.session.save();
       res.render('board/index',{ user: getUserInfo(req), boardInfo: boardInfo, posts: populatedPosts , moment: moment});
     });  
   }).catch(function(err) {    
@@ -70,6 +85,8 @@ router.get('/board/:boardName/:id', function(req, res){
 
     User.populate(post,{path: 'authorId', select: 'name'})
       .then(function(populatedPost) {
+        req.session.lastVisitedPost = req.url;
+        req.session.save();
         res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: populatedPost , moment: moment});
       });
   }).catch(function(err){
@@ -106,12 +123,12 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/signup', passport.authenticate('signup', {
-  successRedirect : '/', 
-  failureRedirect : '/signup', //가입 실패시 redirect할 url주소
+  successRedirect : '/done', 
+  failureRedirect : '/signup',
   failureFlash : true 
 }));
 router.post('/login', passport.authenticate('login', {
-  successRedirect : '/', 
+  successRedirect : '/done', 
   failureRedirect : '/login',
   failureFlash : true 
 }));
