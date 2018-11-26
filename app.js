@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
+var methodOverride = require('method-override');
 
 var app = express();
 
@@ -42,6 +43,8 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session()); //로그인 세션 유지
 
+// DELETE, UPDATE method 사용위한 미들웨어 추가
+app.use(methodOverride('_method'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
