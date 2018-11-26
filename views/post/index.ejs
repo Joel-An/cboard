@@ -18,6 +18,10 @@
         <h3>내용 :
             <%=post.contents%>
         </h3>
+        <form action="/board/<%=boardInfo.nameEng%>" method="get">
+            <input type="submit" class="btn btn-primary pull-right" value="목록">
+        </form>
+        <% if(user.id === post.authorId.id) { %>        
         <form action="/modify/<%=post._id%>" method="get">
             <input type="submit" class="btn btn-primary pull-right" value="수정">
         </form>
@@ -25,9 +29,7 @@
             <input type="hidden" name="id" value="<%=post.id%>" />
             <input type="submit" class="btn btn-primary pull-right" value="삭제">
         </form>
-        <form action="/board/<%=boardInfo.nameEng%>" method="get">
-            <input type="submit" class="btn btn-primary pull-right" value="목록">
-        </form>
+        <% } %>        
         <br>
         <hr>
 
