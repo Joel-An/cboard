@@ -165,5 +165,18 @@ router.post('/publish/post', isLoggedin ,function(req, res) {
   });        
 });
 
+router.delete('/delete/post', function(req, res) {
+
+  Post.findById(req.body.postId).then(function(post) {
+    if(post.validAuthor(req.user._id)) {
+      post.remove();
+    }
+    res.redirect(req.session.lastVisitedBoard);
+  }).catch(function(err) {
+    console.log(err);
+    res.redirect(req.session.lastVisitedBoard);
+  }); 
+});
+
 
 module.exports = router;

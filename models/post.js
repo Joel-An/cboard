@@ -22,5 +22,9 @@ var postSchema = new Schema({
     like: {type:Number, default: 0},
     unLikes: {type:Number, default: 0}
 });
+
+postSchema.methods.validAuthor = function(id) {
+    return this.authorId.equals(id);
+};
  
 module.exports = mongoose.model('Post', postSchema);

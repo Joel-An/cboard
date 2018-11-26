@@ -25,9 +25,9 @@
         <form action="/modify/<%=post._id%>" method="get">
             <input type="submit" class="btn btn-primary pull-right" value="수정">
         </form>
-        <form action="/post/delete?_method=DELETE" method="POST">
-            <input type="hidden" name="id" value="<%=post.id%>" />
-            <input type="submit" class="btn btn-primary pull-right" value="삭제">
+        <form action="/delete/post?_method=DELETE" method="post">                        
+            <input type="hidden" name="postId" value="<%=post.id%>" />
+            <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-primary pull-right" value="삭제">
         </form>
         <% } %>        
         <br>
