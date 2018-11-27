@@ -224,7 +224,7 @@ router.put('/modify/post',function(req, res) {
     res.redirect(`/board/${board.nameEng}/${post.id}`);
   }).catch(function(err){
     console.log(err);
-    res.redirect(`/board/${selectedBoard}/${postId}`)
+    res.redirect(`/board/${selectedBoard}/${postId}`);
   });   
   
 });
