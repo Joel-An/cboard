@@ -12,7 +12,7 @@
         </form>
         <form action="/delete/comment?_method=DELETE" method="POST">
             <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
-            <input type="submit" class="btn btn-default pull-right" value="삭제">
+            <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
         </form>
     <% } %>
 <br>
