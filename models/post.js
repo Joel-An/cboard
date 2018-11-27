@@ -21,7 +21,7 @@ var postSchema = new Schema({
     unLikes: {type:Number, default: 0}
 });
 
-postSchema.methods.validAuthor = function(id) {
+postSchema.methods.isValidAuthor = function(id) {
     return this.authorInfo.equals(id);
 };
  
