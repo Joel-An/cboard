@@ -196,5 +196,38 @@ router.delete('/delete/post', function(req, res) {
   }); 
 });
 
+router.put('/modify/post',function(req, res) {
+  console.log(req.body);
+  var user = req.user;
+  var selectedBoard = req.body.selectedBoard;
+  
+  var postId = req.body.postId;
+  var title = req.body.title;
+  var contents = req.body.contents;
+
+
+  var getBoard = Board.findOne({nameEng: selectedBoard});
+  var getPost = Post.findById(postId);
+
+  Promise.all([getBoard,getPost]).then(function(values){
+    var board = values[0];
+    var post = values[1];
+
+    post.boardId = board.id;
+    post.title = title;
+    post.contents = contents;
+
+    post.isThisModified = true;
+    post.modifiedDate = Date.now();
+
+    post.save();
+    res.redirect(`/board/${board.nameEng}/${post.id}`);
+  }).catch(function(err){
+    console.log(err);
+    res.redirect(`/board/${selectedBoard}/${postId}`)
+  });   
+  
+});
+
 
 module.exports = router;
