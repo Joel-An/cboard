@@ -3,12 +3,12 @@ var Schema = mongoose.Schema;
  
  
 var commentSchema = new Schema({
-    postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+    postInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
 
     contents: { type: String, required: true },
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
-    commentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    commentInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 
     date: {type: Date, default: Date.now()},
     isThisModified: {type: Boolean, default: false},

@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
  
  
 var postSchema = new Schema({
-    boardId: { type: mongoose.Schema.Types.ObjectId, ref: 'Board' },
+    boardInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'Board' },
 
     title: { type: String, required: true },
     contents: { type: String, required: true },
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
     date: {type: Date, default: Date.now()},
     isThisModified: {type: Boolean, default: false},
@@ -22,7 +22,7 @@ var postSchema = new Schema({
 });
 
 postSchema.methods.validAuthor = function(id) {
-    return this.authorId.equals(id);
+    return this.authorInfo.equals(id);
 };
  
 module.exports = mongoose.model('Post', postSchema);
