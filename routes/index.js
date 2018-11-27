@@ -262,5 +262,26 @@ router.put('/modify/post',function(req, res) {
   
 });
 
+router.put('/modify/comment', function(req, res) {
+  var contents = req.body.contents;
+  var commentId = req.body.commentId;
+  var user = req.user;
+
+  Comment.findById(commentId).then(function(comment) {
+    if( comment.isValidAuthor(user._id) ) {
+      comment.contents = contents;
+      comment.isThisModified = true;
+      comment.modifiedDate = Date.now();
+
+      comment.save().then(function() {
+        res.redirect(getLastVisitedUrl(req));
+      });
+    }
+  }).catch(function(err){
+    console.log(err);
+    res.redirect(getLastVisitedUrl(req));
+  });  
+});
+
 
 module.exports = router;

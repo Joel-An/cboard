@@ -1,20 +1,50 @@
 <% if (comments !== null) {
     for(var i = 0; i < comments.length; i++) {%>
-<h4>작성자 :
-    <%=comments[i].authorInfo.name%>
-</h4>
-<h4>내용 :
-    <%=comments[i].contents%>
-</h4>
-    <% if (user.id === comments[i].authorInfo.id) { %>
-        <form action="/modify/comment/<%=comments[i].id%>" method="get">
-            <input type="submit" class="btn btn-default pull-right" value="수정">
-        </form>
-        <form action="/delete/comment?_method=DELETE" method="POST">
-            <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
-            <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
-        </form>
-    <% } %>
-<br>
-<hr>
+        <div id="<%=comments[i].id%>">
+            <div style="display:block">
+                <h4>작성자 : <%=comments[i].authorInfo.name%></h4>
+                <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
+        
+                    <% if (user.id === comments[i].authorInfo.id) { %>
+                        <div>
+                            <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
+                        </div>
+                        <form action="/delete/comment?_method=DELETE" method="POST">
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
+                        </form>
+                    <% } %>                
+            </div>
+            <div style="display:none">
+                <div>
+                    <form action="/modify/comment?_method=PUT" method="post">
+                        <div>
+                            <textarea class="form-control" style="height:50px" name="contents"><%=comments[i].contents%></textarea>                            
+                        </div>
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="submit" onclick="return confirm('수정하시겠습니까?')" class="btn btn-default pull-right" value="완료">                        
+                    </form>                                       
+                    <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >취소</button>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr>
 <%}}%>
+
+<script>
+    var modify = function(id) {
+        var myComment = document.getElementById(id)
+        var commentArea = myComment.firstChild.nextSibling
+        var modifyingArea = myComment.lastChild.previousSibling
+
+        if(commentArea.style.display === 'block') {
+            commentArea.style.display = 'none'
+            modifyingArea.style.display = 'block'
+        } else {
+            commentArea.style.display = 'block'
+            modifyingArea.style.display = 'none'
+        }        
+    }
+
+</script>
