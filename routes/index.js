@@ -7,6 +7,8 @@ var moment = require('moment');
 var Board = require('../models/board');
 var User = require('../models/user');
 var Post = require('../models/post');
+var Comment = require('../models/comment');
+var mongoose = require('mongoose');
 
 function getUserInfo(req) {
   if (req.isAuthenticated()){
@@ -181,6 +183,24 @@ router.post('/publish/post', isLoggedin ,function(req, res) {
     console.log(err);
     res.redirect('/'); 
   });        
+});
+
+router.post('/publish/comment', isLoggedin ,function(req, res) { 
+  var user = req.user;
+  var postId = req.body.postId;
+  var contents = req.body.contents;
+
+  var comment = new Comment();
+  comment.authorId = mongoose.Types.ObjectId(user._id);
+  comment.postId = mongoose.Types.ObjectId(postId);
+  comment.contents = contents;
+
+  comment.save().then(function() {
+    res.redirect(getLastVisitedUrl(req));
+  }).catch(function(err){
+    console.log(err);
+    res.redirect(getLastVisitedUrl(req));
+  });
 });
 
 router.delete('/delete/post', function(req, res) {

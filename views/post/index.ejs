@@ -56,7 +56,10 @@
         <hr>
         <%}}%>
 
-        <form action="/comment/write" method="post">
+        <% if(user.userType === "Guest") { %>
+            <h3 style="background-color:#eeeeee; text-align: center;">댓글 작성은 회원만 가능합니다.</h3>
+        <% } else { %>
+        <form action="/publish/comment" method="post">
             <table class="table table-striped" style="text-align: center">
                 <thead>
                     <tr>
@@ -64,10 +67,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <input type="text" name="id" value="<%=post._id%>" hidden="">
-                    <tr>
-                        <td><input type="text" class="form-control" placeholder="댓글 작성자" name="author" maxlength="25"></td>
-                    </tr>
+                    <input type="hidden" name="postId" value="<%=post.id%>" >
                     <tr>
                         <td><textarea class="form-control" placeholder="댓글 내용" name="contents" maxlength="2048" style="height:50px"></textarea>
                         </td>
@@ -76,6 +76,7 @@
             </table>
             <input type="submit" class="btn btn-primary pull-right" value="확인">
         </form>
+        <% } %>
 
     </div>
 
