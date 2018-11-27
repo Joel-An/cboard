@@ -75,23 +75,23 @@ router.get('/board/:boardName/:id', function(req, res){
   var id = req.params.id;
 
   var getBoardInfo = Board.findOne({nameEng: boardName});
-  var getPost = Post.findById(id);
+  var getPost = Post.findById(id).populate({path: 'authorId', select: 'name'});
+  var getComments = Comment.find({postId:id}).populate({path: 'authorId', select: 'name'});
   
   /*
     TODO: 게시판이 없을 경우 / 게시물이 없을 경우 에러처리를 달리해야함
   */
 
-  Promise.all([getBoardInfo,getPost]).then(function(values) {
+  Promise.all([getBoardInfo,getPost,getComments]).then(function(values) {
     var boardInfo = values[0];
-    var post = values[1];
+    var post = values[1];  
+    var comments = values[2];
 
-    User.populate(post,{path: 'authorId', select: 'name'})
-      .then(function(populatedPost) {
-        req.session.lastVisitedPost = req.url;
-        req.session.save();
-        res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: populatedPost , moment: moment});
-      });
+    req.session.lastVisitedPost = req.url;
+    req.session.save();
+    res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: post, comments:comments , moment: moment});
   }).catch(function(err){
+    console.log(err);
     res.redirect('/');
   });  
 });
