@@ -54,10 +54,10 @@ router.get('/board/:boardName', function(req, res){
       throw "게시판이 존재하지 않습니다.";
     }
     boardInfo = result;
-    return Post.find({boardId: boardInfo._id});
+    return Post.find({boardInfo: boardInfo._id});
   })
   .then(function(posts){
-     User.populate(posts,{path: 'authorId', select: 'name'})
+     User.populate(posts,{path: 'authorInfo', select: 'name'})
     .then(function(populatedPosts){
       req.session.lastVisitedBoard = req.url;
       req.session.save();
@@ -72,11 +72,11 @@ router.get('/board/:boardName', function(req, res){
 
 router.get('/board/:boardName/:id', function(req, res){
   var boardName = req.params.boardName;
-  var id = req.params.id;
+  var postId = req.params.id;
 
   var getBoardInfo = Board.findOne({nameEng: boardName});
-  var getPost = Post.findById(id).populate({path: 'authorId', select: 'name'});
-  var getComments = Comment.find({postId:id}).populate({path: 'authorId', select: 'name'});
+  var getPost = Post.findById(postId).populate({path: 'authorInfo', select: 'name'});
+  var getComments = Comment.find({postInfo: postId}).populate({path: 'authorInfo', select: 'name'});
   
   /*
     TODO: 게시판이 없을 경우 / 게시물이 없을 경우 에러처리를 달리해야함
@@ -166,8 +166,8 @@ router.post('/publish/post', isLoggedin ,function(req, res) {
   Promise.all([getBoardInfo,getUserinfo]).then(function(values){
     var newPost = new Post();
 
-    newPost.boardId = values[0]._id;
-    newPost.authorId = values[1]._id;
+    newPost.boardInfo = values[0]._id;
+    newPost.authorInfo = values[1]._id;
 
     newPost.title = title;
     newPost.contents = contents;
@@ -191,8 +191,8 @@ router.post('/publish/comment', isLoggedin ,function(req, res) {
   var contents = req.body.contents;
 
   var comment = new Comment();
-  comment.authorId = mongoose.Types.ObjectId(user._id);
-  comment.postId = mongoose.Types.ObjectId(postId);
+  comment.authorInfo = mongoose.Types.ObjectId(user._id);
+  comment.postInfo = mongoose.Types.ObjectId(postId);
   comment.contents = contents;
 
   comment.save().then(function() {
@@ -233,7 +233,7 @@ router.put('/modify/post',function(req, res) {
     var board = values[0];
     var post = values[1];
 
-    post.boardId = board.id;
+    post.boardInfo = mongoose.Types.ObjectId(board.id);
     post.title = title;
     post.contents = contents;
 

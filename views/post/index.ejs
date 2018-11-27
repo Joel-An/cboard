@@ -13,7 +13,7 @@
             <%=post.title%>
         </h1>
         <h3>작성자 :
-            <%=post.authorId.name%>
+            <%=post.authorInfo.name%>
         </h3>
         <h3>내용 :
             <%=post.contents%>
@@ -21,7 +21,7 @@
         <form action="/board/<%=boardInfo.nameEng%>" method="get">
             <input type="submit" class="btn btn-primary pull-right" value="목록">
         </form>
-        <% if(user.id === post.authorId.id) { %>        
+        <% if(user.id === post.authorInfo.id) { %>        
         <form action="/modify/post" method="get">
             <input type="hidden" name="boardName" value="<%=boardInfo.nameEng%>" />
             <input type="hidden" name="postId" value="<%=post.id%>" />

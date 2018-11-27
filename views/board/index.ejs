@@ -25,7 +25,7 @@
                         <tr>
                             <td class="number"><%=item.number%></td>
                             <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%></a></td>
-                            <td id="author" class="author"><%=item.authorId.name%></td>
+                            <td id="author" class="author"><%=item.authorInfo.name%></td>
                             <td class="date"><%=moment(item.date).format('YY-MM-DD')%></td>
                             <td class="viewed"><%=item.viewed%></td>
                         </tr>

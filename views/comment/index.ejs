@@ -1,12 +1,12 @@
 <% if (comments !== null) {
     for(var i = 0; i < comments.length; i++) {%>
 <h4>작성자 :
-    <%=comments[i].authorId.name%>
+    <%=comments[i].authorInfo.name%>
 </h4>
 <h4>내용 :
     <%=comments[i].contents%>
 </h4>
-    <% if (user.id === comments[i].authorId.id) { %>
+    <% if (user.id === comments[i].authorInfo.id) { %>
         <form action="/modify/comment/<%=comments[i].id%>" method="get">
             <input type="submit" class="btn btn-default pull-right" value="수정">
         </form>
