@@ -216,6 +216,19 @@ router.delete('/delete/post', function(req, res) {
   }); 
 });
 
+router.delete('/delete/comment', function(req, res) {
+
+  Comment.findById(req.body.commentId).then(function(comment) {
+    if(comment.isValidAuthor(req.user._id)) {
+      comment.remove();
+    }
+    res.redirect(req.session.lastVisitedPost);
+  }).catch(function(err) {
+    console.log(err);
+    res.redirect(req.session.lastVisitedPost);
+  }); 
+});
+
 router.put('/modify/post',function(req, res) {
   console.log(req.body);
   var user = req.user;

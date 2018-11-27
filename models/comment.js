@@ -19,5 +19,9 @@ var commentSchema = new Schema({
 
     isDeleted: {type: Boolean, default: false}
 });
+
+commentSchema.methods.isValidAuthor = function(id) {
+    return this.authorInfo.equals(id);
+};
  
 module.exports = mongoose.model('Comment', commentSchema);
