@@ -6,13 +6,15 @@
 <h4>내용 :
     <%=comments[i].contents%>
 </h4>
-<form action="/modify/comment/<%=comments[i].id%>" method="get">
-    <input type="submit" class="btn btn-default pull-right" value="수정">
-</form>
-<form action="/comment/delete?_method=DELETE" method="POST">
-    <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
-    <input type="submit" class="btn btn-default pull-right" value="삭제">
-</form>
+    <% if (user.id === comments[i].authorId.id) { %>
+        <form action="/modify/comment/<%=comments[i].id%>" method="get">
+            <input type="submit" class="btn btn-default pull-right" value="수정">
+        </form>
+        <form action="/comment/delete?_method=DELETE" method="POST">
+            <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+            <input type="submit" class="btn btn-default pull-right" value="삭제">
+        </form>
+    <% } %>
 <br>
 <hr>
 <%}}%>
