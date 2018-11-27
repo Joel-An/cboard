@@ -9,8 +9,6 @@ var postSchema = new Schema({
     contents: { type: String, required: true },
     authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
-    commentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-
     date: {type: Date, default: Date.now()},
     isThisModified: {type: Boolean, default: false},
     modifiedDate: {type: Date},
