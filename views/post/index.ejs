@@ -18,6 +18,10 @@
         <h3>내용 :
             <%=post.contents%>
         </h3>
+        <div style="text-align:right">
+            조회수 : <%=post.viewed%>
+            <br>                      
+        </div>
         <form action="/board/<%=boardInfo.nameEng%>" method="get">
             <input type="submit" class="btn btn-primary pull-right" value="목록">
         </form>
