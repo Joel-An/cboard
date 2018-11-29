@@ -4,8 +4,9 @@
             <div id="comment<%=comments[i].id%>" style="display:block">
                 <h4>작성자 : <%=comments[i].authorInfo.name%></h4>
                 <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
-        
                     <% if (user.id === comments[i].authorInfo.id) { %>
+                        <button class="btn btn-secondary pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >답글</button>            
+
                         <div>
                             <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
                         </div>
@@ -13,7 +14,7 @@
                         <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
                         <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
                         </form>
-                    <% } %>                
+                    <% } %>
             </div>
             <div id="modifyComment<%=comments[i].id%>" style="display:none">
                 <div>
@@ -26,6 +27,18 @@
                     </form>                                       
                     <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >취소</button>
                 </div>
+            </div>
+            <div id="replyToComment<%=comments[i].id%>" style="display:none">
+                <br><hr>
+                <form action="/reply/comment" method="post">
+                    <div style="background-color:#eeeeee; text-align:center" >
+                        답글 작성                       
+                        <textarea class="form-control" style="height:50px" name="contents"></textarea>                      
+                        <input type="submit" class="btn btn-default pull-right" value="완료">                        
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                    </div>
+                </form>
+                <button class="btn btn-default pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >취소</button>                 
             </div>
         </div>
         <br>
@@ -44,6 +57,17 @@
             commentArea.style.display = 'block'
             modifyingArea.style.display = 'none'
         }        
+    }
+
+    var replyToComment = function(id) {
+        var commentArea = document.getElementById('comment'+id)
+        var replyToCommentArea = document.getElementById('replyToComment'+id)
+
+        if(replyToCommentArea.style.display == 'block') {            
+            replyToCommentArea.style.display = 'none'
+        } else {
+            replyToCommentArea.style.display = 'block'
+        } 
     }
 
 </script>
