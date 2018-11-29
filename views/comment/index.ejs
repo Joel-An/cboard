@@ -1,7 +1,7 @@
 <% if (comments !== null) {
     for(var i = 0; i < comments.length; i++) {%>
-        <div id="<%=comments[i].id%>">
-            <div style="display:block">
+        <div>
+            <div id="comment<%=comments[i].id%>" style="display:block">
                 <h4>작성자 : <%=comments[i].authorInfo.name%></h4>
                 <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
         
@@ -15,7 +15,7 @@
                         </form>
                     <% } %>                
             </div>
-            <div style="display:none">
+            <div id="modifyComment<%=comments[i].id%>" style="display:none">
                 <div>
                     <form action="/modify/comment?_method=PUT" method="post">
                         <div>
@@ -34,9 +34,8 @@
 
 <script>
     var modify = function(id) {
-        var myComment = document.getElementById(id)
-        var commentArea = myComment.firstChild.nextSibling
-        var modifyingArea = myComment.lastChild.previousSibling
+        var commentArea = document.getElementById('comment'+id)
+        var modifyingArea = document.getElementById('modifyComment'+id)        
 
         if(commentArea.style.display === 'block') {
             commentArea.style.display = 'none'
