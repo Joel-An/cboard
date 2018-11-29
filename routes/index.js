@@ -87,9 +87,12 @@ router.get('/board/:boardName/:id', function(req, res){
     var post = values[1];  
     var comments = values[2];
 
-    req.session.lastVisitedPost = req.url;
-    req.session.save();
-    res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: post, comments:comments , moment: moment});
+    post.viewed = ++post.viewed;
+    post.save().then(function(){
+      req.session.lastVisitedPost = req.url;
+      req.session.save();
+      res.render('post/index',{ user: getUserInfo(req), boardInfo: boardInfo, post: post, comments:comments , moment: moment});
+    });    
   }).catch(function(err){
     console.log(err);
     res.redirect('/');
