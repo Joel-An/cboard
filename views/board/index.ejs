@@ -10,25 +10,25 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th>번호</th>
+                    <th class="text-center">번호</th>
                     <th>제목</th>
-                    <th>작성자</th>
-                    <th>날짜</th>
-                    <th>조회수</th>
+                    <th class="text-center">작성자</th>
+                    <th class="text-center">날짜</th>
+                    <th class="text-center">조회수</th>
                 </tr>
             </thead>
             <tbody>
                 <% if(posts.length > 0) { %>
-                    <% var i=0; %>
+                    <% var i=posts.length; %>
                     <% posts.forEach(function(item) { %>
-                        <% i++ %>
                         <tr>
-                            <td class="number"><%=item.number%></td>
+                            <td class="number text-center"><%=i%></td>
                             <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%></a></td>
-                            <td id="author" class="author"><%=item.authorInfo.name%></td>
-                            <td class="date"><%=moment(item.date).format('YY-MM-DD')%></td>
-                            <td class="viewed"><%=item.viewed%></td>
+                            <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
+                            <td class="date text-center"><%=moment(item.date).format('YY-MM-DD')%></td>
+                            <td class="viewed text-center"><%=item.viewed%></td>
                         </tr>
+                        <% i-- %>
                     <% }) %>
                 <% } %>
             </tbody>
