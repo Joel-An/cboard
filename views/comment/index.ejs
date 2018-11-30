@@ -44,6 +44,20 @@
         </div>
         <br>
         <hr>
+        <% if(comments[i].childComments != null) { 
+            for(var j=0 ; j < comments[i].childComments.length ; j++) { %>
+                <div class="row">
+                    <div class="col-xs-1 text-right">ㄴ</div>
+                    <div class="col-xs-11 text-left">작성자 : <%=comments[i].childComments[j].authorInfo.name%></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-11"><%=comments[i].childComments[j].contents%></div>
+                </div>       
+                <br>
+                <hr>
+        <%  } %>
+        <% } %>
 <%}}%>
 
 <script>
