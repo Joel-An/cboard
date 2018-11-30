@@ -8,7 +8,9 @@ var commentSchema = new Schema({
     contents: { type: String, required: true },
     authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
-    commentInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    parentComment: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' },
+    childComments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    isChild: {type: Boolean, default: false},
 
     date: {type: Date, default: Date.now()},
     isThisModified: {type: Boolean, default: false},
