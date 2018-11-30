@@ -76,7 +76,9 @@ router.get('/board/:boardName/:id', function(req, res){
 
   var getBoardInfo = Board.findOne({nameEng: boardName});
   var getPost = Post.findById(postId).populate({path: 'authorInfo', select: 'name'});
-  var getComments = Comment.find({postInfo: postId}).populate({path: 'authorInfo', select: 'name'});
+  var getComments = Comment.find({postInfo: postId, isChild:false})
+      .populate({path: 'authorInfo', select: 'name'})
+      .populate({path:'childComments',populate:{path:'authorInfo', select:'name'}});
   
   /*
     TODO: 게시판이 없을 경우 / 게시물이 없을 경우 에러처리를 달리해야함
