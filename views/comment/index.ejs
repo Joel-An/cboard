@@ -36,6 +36,7 @@
                         <textarea class="form-control" style="height:50px" name="contents"></textarea>                      
                         <input type="submit" class="btn btn-default pull-right" value="완료">                        
                         <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="hidden" name="postId" value="<%=comments[i].postInfo%>" />
                     </div>
                 </form>
                 <button class="btn btn-default pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >취소</button>                 
