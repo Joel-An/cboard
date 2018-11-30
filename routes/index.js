@@ -206,6 +206,26 @@ router.post('/publish/comment', isLoggedin ,function(req, res) {
   });
 });
 
+router.post('/reply/comment', isLoggedin ,function(req, res) {
+  var comment = new Comment();
+  
+  comment.authorInfo = mongoose.Types.ObjectId(req.user._id);
+  comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
+  comment.parentComment = mongoose.Types.ObjectId(req.body.commentId);
+  comment.contents = req.body.contents;
+  comment.isChild = true;
+
+  comment.save().then(function(childComment) {
+    Comment.findById(childComment.parentComment).then(function(parent) {
+      parent.childComments.push(childComment._id);
+      parent.save().then(function(){
+        res.redirect(getLastVisitedUrl(req));
+      });
+    });
+  });
+
+});
+
 router.delete('/delete/post', function(req, res) {
 
   Post.findById(req.body.postId).then(function(post) {
