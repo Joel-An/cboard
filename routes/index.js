@@ -119,21 +119,23 @@ router.get(
   })
 );
 
-router.get("/write/:boardName", isLoggedin, function(req, res) {
-  var selectedBoard = req.params.boardName;
-  Board.find({ boardType: "Normal" }, { nameKor: 1, nameEng: 1 }, function(
-    err,
-    board
-  ) {
-    if (err) console.log(err);
+router.get(
+  "/write/:boardName",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    var selectedBoard = req.params.boardName;
+
+    let boardInfo = await Board.find({ boardType: "Normal" }).select(
+      "nameKor nameEng"
+    );
 
     res.render("post/write", {
       user: getUserInfo(req),
-      boardList: board,
+      boardList: boardInfo,
       selectedBoard: selectedBoard
     });
-  });
-});
+  })
+);
 
 router.get("/modify/post", isLoggedin, function(req, res) {
   var boardName = req.query.boardName;
