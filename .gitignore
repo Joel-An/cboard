@@ -2,3 +2,4 @@ node_modules
 views/templete.ejs
 
 .vscode
+.eslintrc.json
