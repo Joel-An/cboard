@@ -304,27 +304,21 @@ router.put(
   })
 );
 
-router.put("/modify/comment", function(req, res) {
-  var contents = req.body.contents;
-  var commentId = req.body.commentId;
-  var user = req.user;
+router.put(
+  "/modify/comment",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    const comment = await Comment.findById(req.body.commentId);
+    if (comment.isValidAuthor(req.user._id)) {
+      comment.contents = req.body.contents;
+      comment.isThisModified = true;
+      comment.modifiedDate = Date.now();
 
-  Comment.findById(commentId)
-    .then(function(comment) {
-      if (comment.isValidAuthor(user._id)) {
-        comment.contents = contents;
-        comment.isThisModified = true;
-        comment.modifiedDate = Date.now();
-
-        comment.save().then(function() {
-          res.redirect(getLastVisitedUrl(req));
-        });
-      }
-    })
-    .catch(function(err) {
-      console.log(err);
+      await comment.save();
+      res.status(204);
       res.redirect(getLastVisitedUrl(req));
-    });
-});
+    }
+  })
+);
 
 module.exports = router;
