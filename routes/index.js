@@ -137,30 +137,24 @@ router.get(
   })
 );
 
-router.get("/modify/post", isLoggedin, function(req, res) {
-  var boardName = req.query.boardName;
-  var postId = req.query.postId;
+router.get(
+  "/modify/post",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    let boardName = req.query.boardName;
+    let postId = req.query.postId;
 
-  var getBoardInfo = Board.find({ boardType: "Normal" });
-  var getPost = Post.findById(postId);
+    let boardInfo = await Board.find({ boardType: "Normal" });
+    let post = await Post.findById(postId);
 
-  Promise.all([getBoardInfo, getPost])
-    .then(function(values) {
-      var boardList = values[0];
-      var post = values[1];
-
-      res.render("post/modify", {
-        user: getUserInfo(req),
-        boardList: boardList,
-        selectedBoard: boardName,
-        post: post
-      });
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect(getLastVisitedUrl(req));
+    res.render("post/modify", {
+      user: getUserInfo(req),
+      boardList: boardInfo,
+      selectedBoard: boardName,
+      post: post
     });
-});
+  })
+);
 
 router.get("/login", function(req, res) {
   res.render("login", { user: getUserInfo(req), err: req.flash("err") });
@@ -313,38 +307,30 @@ router.delete("/delete/comment", function(req, res) {
     });
 });
 
-router.put("/modify/post", function(req, res) {
-  console.log(req.body);
-  var user = req.user;
-  var selectedBoard = req.body.selectedBoard;
+router.put(
+  "/modify/post",
+  wrapAsync(async function(req, res) {
+    let user = req.user;
+    let selectedBoard = req.body.selectedBoard;
 
-  var postId = req.body.postId;
-  var title = req.body.title;
-  var contents = req.body.contents;
+    let postId = req.body.postId;
+    let title = req.body.title;
+    let contents = req.body.contents;
 
-  var getBoard = Board.findOne({ nameEng: selectedBoard });
-  var getPost = Post.findById(postId);
+    let board = await Board.findOne({ nameEng: selectedBoard });
+    let post = await Post.findById(postId);
 
-  Promise.all([getBoard, getPost])
-    .then(function(values) {
-      var board = values[0];
-      var post = values[1];
+    post.boardInfo = mongoose.Types.ObjectId(board.id);
+    post.title = title;
+    post.contents = contents;
 
-      post.boardInfo = mongoose.Types.ObjectId(board.id);
-      post.title = title;
-      post.contents = contents;
+    post.isThisModified = true;
+    post.modifiedDate = Date.now();
 
-      post.isThisModified = true;
-      post.modifiedDate = Date.now();
-
-      post.save();
-      res.redirect(`/board/${board.nameEng}/${post.id}`);
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect(`/board/${selectedBoard}/${postId}`);
-    });
-});
+    await post.save();
+    res.redirect(`/board/${board.nameEng}/${post.id}`);
+  })
+);
 
 router.put("/modify/comment", function(req, res) {
   var contents = req.body.contents;
