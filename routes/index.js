@@ -245,9 +245,20 @@ router.delete('/delete/comment', function(req, res) {
 
   Comment.findById(req.body.commentId).then(function(comment) {
     if(comment.isValidAuthor(req.user._id)) {
+      if(comment.isChild) {
+        Comment.findById(comment.parentComment).then(function(parent){
+          parent.childComments.pull(comment._id);
+          parent.save();
+          comment.remove(function(err,comment){
+            if(err) return handleError(err);
+            res.redirect(req.session.lastVisitedPost);
+          });
+        });
+      } else {
       comment.remove();
-    }
-    res.redirect(req.session.lastVisitedPost);
+      res.redirect(req.session.lastVisitedPost);
+      }
+    }    
   }).catch(function(err) {
     console.log(err);
     res.redirect(req.session.lastVisitedPost);

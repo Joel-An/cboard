@@ -4,9 +4,8 @@
             <div id="comment<%=comments[i].id%>" style="display:block">
                 <h4>작성자 : <%=comments[i].authorInfo.name%></h4>
                 <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
-                    <% if (user.id === comments[i].authorInfo.id) { %>
                         <button class="btn btn-secondary pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >답글</button>            
-
+                    <% if (user.id === comments[i].authorInfo.id) { %>
                         <div>
                             <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
                         </div>
@@ -44,18 +43,44 @@
         </div>
         <br>
         <hr>
-        <% if(comments[i].childComments != null) { 
-            for(var j=0 ; j < comments[i].childComments.length ; j++) { %>
-                <div class="row">
-                    <div class="col-xs-1 text-right">ㄴ</div>
-                    <div class="col-xs-11 text-left">작성자 : <%=comments[i].childComments[j].authorInfo.name%></div>
+        <% if(comments[i].childComments != null) {
+            var childComments = comments[i].childComments;
+            for(var j=0 ; j < childComments.length ; j++) { %>
+                <div id="comment<%=childComments[j].id%>" style="display:block">
+                    <div class="row">
+                        <div class="col-xs-1 text-right">ㄴ</div>
+                        <div class="col-xs-11 text-left">작성자 : <%=childComments[j].authorInfo.name%></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-11"><%=childComments[j].contents%></div>
+                    </div>
+                    <% if (user.id == childComments[j].authorInfo.id) { %>
+                    <div class="row">
+                        <div class="col-xs-3 col-xs-offset-9" >
+                            <button class="btn btn-default btn-sm pull-right" value="<%=childComments[j].id %>" onclick="modify(this.value)">수정</button>
+                            <form action="/delete/comment?_method=DELETE" method="POST">
+                                <input type="hidden" name="commentId" value="<%=childComments[j].id%>" />
+                                <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default btn-sm pull-right" value="삭제">
+                            </form>                          
+                        </div>                        
+                    </div>
+                    <% } %>
                 </div>
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-11"><%=comments[i].childComments[j].contents%></div>
-                </div>       
-                <br>
-                <hr>
+                <div id="modifyComment<%=childComments[j].id%>" style="display:none">
+                        <div>
+                            <form action="/modify/comment?_method=PUT" method="post">
+                                <div>
+                                    <textarea class="form-control" style="height:50px" name="contents"><%=childComments[j].contents%></textarea>                            
+                                </div>
+                                <input type="hidden" name="commentId" value="<%=childComments[j].id%>" />
+                                <input type="submit" onclick="return confirm('수정하시겠습니까?')" class="btn btn-default btn-sm pull-right" value="완료">                        
+                            </form>                                       
+                            <button class="btn btn-default btn-sm pull-right" onclick="modify(this.value)" value="<%=childComments[j].id %>" >취소</button>
+                        </div>
+                        <br>
+                    </div>
+                <hr style="height: 1px">        
         <%  } %>
         <% } %>
 <%}}%>
