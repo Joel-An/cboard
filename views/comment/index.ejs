@@ -4,7 +4,9 @@
             <div id="comment<%=comments[i].id%>" style="display:block">
                 <h4>작성자 : <%=comments[i].authorInfo.name%></h4>
                 <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
+                    <% if (user.userType !== "Guest") { %>
                         <button class="btn btn-secondary pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >답글</button>            
+                    <% } %>
                     <% if (user.id === comments[i].authorInfo.id) { %>
                         <div>
                             <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
