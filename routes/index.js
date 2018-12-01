@@ -34,6 +34,13 @@ function getLastVisitedUrl(req) {
   return '/'; 
 }
 
+function wrapAsync(fn) {
+  return function(req, res, next) {
+    // 모든 오류를 .catch() 처리하고 next()로 에러처리 미들웨어로 전달   
+    fn(req, res, next).catch(next);
+  };
+}
+
 /* GET home page. */
 router.get('/', function(req, res) {  
   res.render('index', { user: getUserInfo(req) });
