@@ -191,42 +191,24 @@ router.post(
   })
 );
 
-router.post("/publish/post", isLoggedin, function(req, res) {
-  var userId = req.user._id;
-  var board = req.body.selectedBoard;
+router.post(
+  "/publish/post",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    const boardInfo = await Board.findOne({ nameEng: req.body.selectedBoard });
+    const userInfo = await User.findOne({ _id: req.user._id });
 
-  var title = req.body.title;
-  var contents = req.body.contents;
+    const newPost = new Post();
 
-  var getBoardInfo = Board.findOne({ nameEng: board });
-  var getUserinfo = User.findOne({ _id: userId });
+    newPost.boardInfo = boardInfo._id;
+    newPost.authorInfo = userInfo._id;
+    newPost.title = req.body.title;
+    newPost.contents = req.body.contents;
 
-  Promise.all([getBoardInfo, getUserinfo])
-    .then(function(values) {
-      var newPost = new Post();
-
-      newPost.boardInfo = values[0]._id;
-      newPost.authorInfo = values[1]._id;
-
-      newPost.title = title;
-      newPost.contents = contents;
-
-      var boardName = values[0].nameEng;
-
-      newPost
-        .save()
-        .then(function(savedPost) {
-          res.redirect("/board/" + boardName);
-        })
-        .catch(function(err) {
-          return err;
-        });
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect("/");
-    });
-});
+    await newPost.save();
+    res.redirect(`/board/${boardInfo.nameEng}`);
+  })
+);
 
 router.post("/publish/comment", isLoggedin, function(req, res) {
   var user = req.user;
