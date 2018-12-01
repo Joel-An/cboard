@@ -78,50 +78,46 @@ router.get(
   })
 );
 
-router.get("/board/:boardName/:id", function(req, res) {
-  var boardName = req.params.boardName;
-  var postId = req.params.id;
+router.get(
+  "/board/:boardName/:id",
+  wrapAsync(async function(req, res) {
+    let boardName = req.params.boardName;
+    let postId = req.params.id;
 
-  var getBoardInfo = Board.findOne({ nameEng: boardName });
-  var getPost = Post.findById(postId).populate({
-    path: "authorInfo",
-    select: "name"
-  });
-  var getComments = Comment.find({ postInfo: postId, isChild: false })
-    .populate({ path: "authorInfo", select: "name" })
-    .populate({
-      path: "childComments",
-      populate: { path: "authorInfo", select: "name" }
+    let boardInfo = await Board.findOne({ nameEng: boardName });
+    let post = await Post.findById(postId).populate({
+      path: "authorInfo",
+      select: "name"
     });
 
-  /*
-    TODO: 게시판이 없을 경우 / 게시물이 없을 경우 에러처리를 달리해야함
-  */
+    if (post == null) {
+      if (boardInfo == null) {
+        let err = new Error("존재하지 않는 글입니다.");
+        err.status = 404;
+        throw err;
+      }
+    }
 
-  Promise.all([getBoardInfo, getPost, getComments])
-    .then(function(values) {
-      var boardInfo = values[0];
-      var post = values[1];
-      var comments = values[2];
-
-      post.viewed = ++post.viewed;
-      post.save().then(function() {
-        req.session.lastVisitedPost = req.url;
-        req.session.save();
-        res.render("post/index", {
-          user: getUserInfo(req),
-          boardInfo: boardInfo,
-          post: post,
-          comments: comments,
-          moment: moment
-        });
+    let comments = await Comment.find({ postInfo: postId, isChild: false })
+      .populate({ path: "authorInfo", select: "name" })
+      .populate({
+        path: "childComments",
+        populate: { path: "authorInfo", select: "name" }
       });
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect("/");
+
+    post.viewed += 1;
+    await post.save();
+    req.session.lastVisitedPost = req.url;
+    req.session.save();
+    res.render("post/index", {
+      user: getUserInfo(req),
+      boardInfo: boardInfo,
+      post: post,
+      comments: comments,
+      moment: moment
     });
-});
+  })
+);
 
 router.get("/write/:boardName", isLoggedin, function(req, res) {
   var selectedBoard = req.params.boardName;
