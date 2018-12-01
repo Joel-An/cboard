@@ -210,26 +210,19 @@ router.post(
   })
 );
 
-router.post("/publish/comment", isLoggedin, function(req, res) {
-  var user = req.user;
-  var postId = req.body.postId;
-  var contents = req.body.contents;
+router.post(
+  "/publish/comment",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    const comment = new Comment();
+    comment.authorInfo = mongoose.Types.ObjectId(req.user._id);
+    comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
+    comment.contents = req.body.contents;
 
-  var comment = new Comment();
-  comment.authorInfo = mongoose.Types.ObjectId(user._id);
-  comment.postInfo = mongoose.Types.ObjectId(postId);
-  comment.contents = contents;
-
-  comment
-    .save()
-    .then(function() {
-      res.redirect(getLastVisitedUrl(req));
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect(getLastVisitedUrl(req));
-    });
-});
+    await comment.save();
+    res.redirect(getLastVisitedUrl(req));
+  })
+);
 
 router.post("/reply/comment", isLoggedin, function(req, res) {
   var comment = new Comment();
