@@ -224,24 +224,27 @@ router.post(
   })
 );
 
-router.post("/reply/comment", isLoggedin, function(req, res) {
-  var comment = new Comment();
+router.post(
+  "/reply/comment",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    const comment = new Comment();
 
-  comment.authorInfo = mongoose.Types.ObjectId(req.user._id);
-  comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
-  comment.parentComment = mongoose.Types.ObjectId(req.body.commentId);
-  comment.contents = req.body.contents;
-  comment.isChild = true;
+    comment.authorInfo = mongoose.Types.ObjectId(req.user._id);
+    comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
+    comment.parentComment = mongoose.Types.ObjectId(req.body.commentId);
+    comment.contents = req.body.contents;
+    comment.isChild = true;
 
-  comment.save().then(function(childComment) {
-    Comment.findById(childComment.parentComment).then(function(parent) {
-      parent.childComments.push(childComment._id);
-      parent.save().then(function() {
-        res.redirect(getLastVisitedUrl(req));
-      });
-    });
-  });
-});
+    await comment.save();
+    const parent = await Comment.findById(comment.parentComment);
+
+    parent.childComments.push(comment._id);
+    await parent.save();
+
+    res.redirect(getLastVisitedUrl(req));
+  })
+);
 
 router.delete("/delete/post", function(req, res) {
   Post.findById(req.body.postId)
@@ -257,30 +260,25 @@ router.delete("/delete/post", function(req, res) {
     });
 });
 
-router.delete("/delete/comment", function(req, res) {
-  Comment.findById(req.body.commentId)
-    .then(function(comment) {
-      if (comment.isValidAuthor(req.user._id)) {
-        if (comment.isChild) {
-          Comment.findById(comment.parentComment).then(function(parent) {
-            parent.childComments.pull(comment._id);
-            parent.save();
-            comment.remove(function(err, comment) {
-              if (err) return handleError(err);
-              res.redirect(req.session.lastVisitedPost);
-            });
-          });
-        } else {
-          comment.remove();
-          res.redirect(req.session.lastVisitedPost);
-        }
+router.delete(
+  "/delete/comment",
+  wrapAsync(async function(req, res) {
+    const comment = await Comment.findById(req.body.commentId);
+
+    if (comment.isValidAuthor(req.user._id)) {
+      if (comment.isChild) {
+        const parent = await Comment.findById(comment.parentComment);
+        parent.childComments.pull(comment._id);
+        await parent.save();
+        await comment.remove();
+        res.redirect(req.session.lastVisitedPost);
+      } else {
+        await comment.remove();
+        res.redirect(req.session.lastVisitedPost);
       }
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect(req.session.lastVisitedPost);
-    });
-});
+    }
+  })
+);
 
 router.put(
   "/modify/post",
