@@ -56,7 +56,9 @@ router.get(
     let boardInfo = await Board.findOne({ nameEng: boardName });
 
     if (boardInfo == null) {
-      throw new Error("게시판이 존재하지 않습니다.");
+      let err = new Error("게시판이 존재하지 않습니다.");
+      err.status = 404;
+      throw err;
     }
 
     let posts = await Post.find({ boardInfo: boardInfo._id }).populate({
