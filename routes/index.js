@@ -53,35 +53,26 @@ router.get(
   wrapAsync(async function(req, res) {
     var boardName = req.params.boardName;
 
-    var getBoardInfo = Board.findOne({ nameEng: boardName });
-    var boardInfo;
+    let boardInfo = await Board.findOne({ nameEng: boardName });
 
-    getBoardInfo
-      .then(function(result) {
-        if (result == null) {
-          throw "게시판이 존재하지 않습니다.";
-        }
-        boardInfo = result;
-        return Post.find({ boardInfo: boardInfo._id });
-      })
-      .then(function(posts) {
-        User.populate(posts, { path: "authorInfo", select: "name" }).then(
-          function(populatedPosts) {
-            req.session.lastVisitedBoard = req.url;
-            req.session.save();
-            res.render("board/index", {
-              user: getUserInfo(req),
-              boardInfo: boardInfo,
-              posts: populatedPosts,
-              moment: moment
-            });
-          }
-        );
-      })
-      .catch(function(err) {
-        res.redirect("/");
-        console.log(err);
-      });
+    if (boardInfo == null) {
+      throw new Error("게시판이 존재하지 않습니다.");
+    }
+
+    let posts = await Post.find({ boardInfo: boardInfo._id }).populate({
+      path: "authorInfo",
+      select: "name"
+    });
+
+    req.session.lastVisitedBoard = req.url;
+    req.session.save();
+
+    res.render("board/index", {
+      user: getUserInfo(req),
+      boardInfo: boardInfo,
+      posts: posts,
+      moment: moment
+    });
   })
 );
 
