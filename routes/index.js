@@ -246,19 +246,18 @@ router.post(
   })
 );
 
-router.delete("/delete/post", function(req, res) {
-  Post.findById(req.body.postId)
-    .then(function(post) {
-      if (post.isValidAuthor(req.user._id)) {
-        post.remove();
-      }
-      res.redirect(req.session.lastVisitedBoard);
-    })
-    .catch(function(err) {
-      console.log(err);
-      res.redirect(req.session.lastVisitedBoard);
-    });
-});
+router.delete(
+  "/delete/post",
+  wrapAsync(async function(req, res) {
+    const post = await Post.findById(req.body.postId);
+
+    if (post.isValidAuthor(req.user._id)) {
+      await post.remove();
+    }
+    res.status(204);
+    res.redirect(req.session.lastVisitedBoard);
+  })
+);
 
 router.delete(
   "/delete/comment",
