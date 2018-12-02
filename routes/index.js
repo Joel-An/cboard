@@ -85,7 +85,13 @@ router.get(
     let postId = req.params.id;
 
     let boardInfo = await Board.findOne({ nameEng: boardName });
-    let post = await Post.findById(postId).populate({
+    let post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $inc: { viewed: 1 }
+      },
+      { new: true }
+    ).populate({
       path: "authorInfo",
       select: "name"
     });
@@ -105,8 +111,6 @@ router.get(
         populate: { path: "authorInfo", select: "name" }
       });
 
-    post.viewed += 1;
-    await post.save();
     req.session.lastVisitedPost = req.url;
     req.session.save();
     res.render("post/index", {
