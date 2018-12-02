@@ -3,3 +3,4 @@ views/templete.ejs
 
 .vscode
 .eslintrc.json
+.prettierignore
