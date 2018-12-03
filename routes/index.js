@@ -215,6 +215,7 @@ router.post(
     newPost.authorInfo.name = userInfo.name;
     newPost.title = req.body.title;
     newPost.contents = req.body.contents;
+    newPost.date = Date.now();
 
     await newPost.save();
     res.redirect(`/board/${boardInfo.nameEng}`);
