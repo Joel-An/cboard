@@ -294,25 +294,26 @@ router.delete(
 router.put(
   "/modify/post",
   wrapAsync(async function(req, res) {
-    let user = req.user;
     let selectedBoard = req.body.selectedBoard;
-
     let postId = req.body.postId;
-    let title = req.body.title;
-    let contents = req.body.contents;
 
     let board = await Board.findOne({ nameEng: selectedBoard });
     let post = await Post.findById(postId);
 
-    post.boardInfo = mongoose.Types.ObjectId(board.id);
-    post.title = title;
-    post.contents = contents;
+    if (post.isValidAuthor(req.user._id)) {
+      post.boardInfo = board._id;
+      post.title = req.body.title;
+      post.contents = req.body.contents;
+      post.isThisModified = true;
+      post.modifiedDate = Date.now();
 
-    post.isThisModified = true;
-    post.modifiedDate = Date.now();
-
-    await post.save();
-    res.redirect(`/board/${board.nameEng}/${post.id}`);
+      await post.save();
+      res.redirect(`/board/${board.nameEng}/${post.id}`);
+    } else {
+      let err = new Error("본인의 글만 수정할 수 있습니다.");
+      err.status = 403;
+      throw err;
+    }
   })
 );
 
