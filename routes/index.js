@@ -256,6 +256,7 @@ router.post(
     comment.authorInfo.name = req.user.name;
     comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
     comment.contents = req.body.contents;
+    comment.date = Date.now();
 
     await comment.save();
     res.redirect(getLastVisitedUrl(req));
@@ -273,6 +274,7 @@ router.post(
     comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
     comment.parentComment = mongoose.Types.ObjectId(req.body.commentId);
     comment.contents = req.body.contents;
+    comment.date = Date.now();
     comment.isChild = true;
 
     await comment.save();
