@@ -101,10 +101,7 @@ router.get(
         $inc: { viewed: 1 }
       },
       { new: true }
-    ).populate({
-      path: "authorInfo",
-      select: "name"
-    });
+    );
 
     if (post == null) {
       if (boardInfo == null) {
@@ -114,12 +111,10 @@ router.get(
       }
     }
 
-    let comments = await Comment.find({ postInfo: postId, isChild: false })
-      .populate({ path: "authorInfo", select: "name" })
-      .populate({
-        path: "childComments",
-        populate: { path: "authorInfo", select: "name" }
-      });
+    let comments = await Comment.find({
+      postInfo: postId,
+      isChild: false
+    }).populate("childComments");
 
     req.session.lastVisitedPost = req.url;
     req.session.save();
