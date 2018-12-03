@@ -23,7 +23,7 @@
                     <% posts.forEach(function(item) { %>
                         <tr>
                             <td class="number text-center"><%=i%></td>
-                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%></a></td>
+                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> [<%=item.commentCount%>]</a></td>
                             <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
                             <td class="date text-center"><%=moment(item.date).format('YY-MM-DD')%></td>
                             <td class="viewed text-center"><%=item.viewed%></td>
