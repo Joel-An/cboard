@@ -200,12 +200,13 @@ router.post(
   isLoggedin,
   wrapAsync(async function(req, res) {
     const boardInfo = await Board.findOne({ nameEng: req.body.selectedBoard });
-    const userInfo = await User.findOne({ _id: req.user._id });
+    const userInfo = req.user;
 
     const newPost = new Post();
 
     newPost.boardInfo = boardInfo._id;
-    newPost.authorInfo = userInfo._id;
+    newPost.authorInfo._id = userInfo._id;
+    newPost.authorInfo.name = userInfo.name;
     newPost.title = req.body.title;
     newPost.contents = req.body.contents;
 
