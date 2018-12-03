@@ -6,7 +6,7 @@ var commentSchema = new Schema({
   postInfo: { type: ObjectId, ref: "Post" },
 
   contents: { type: String, required: true },
-  authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  authorInfo: { _id: { type: ObjectId, ref: "User" }, name: { type: String } },
 
   parentComment: { type: ObjectId, ref: "Comment" },
   childComments: [{ type: ObjectId, ref: "Comment" }],

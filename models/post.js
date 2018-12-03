@@ -7,7 +7,7 @@ var postSchema = new Schema({
 
   title: { type: String, required: true },
   contents: { type: String, required: true },
-  authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  authorInfo: { _id: { type: ObjectId, ref: "User" }, name: { type: String } },
 
   date: { type: Date, default: Date.now() },
   isThisModified: { type: Boolean, default: false },
