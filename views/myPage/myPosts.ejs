@@ -12,10 +12,10 @@
         <% if(posts.length > 0) { %>
             <% posts.forEach(function(item) { %>
                 <tr>
-                    <td class="text-center"><%=item.boardInfo.boardEng%></td>
-                    <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
-                    <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
-                    <td class="viewed text-center"><%=item.upVotes%></td>
+                    <td class="text-center"><%=item.boardInfo.nameKor%></td>
+                    <td class="text-left"><a href="/board/<%=item.boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
+                    <td class="text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
+                    <td class="text-center"><%=item.upVotes%></td>
                     </tr>
                 <% }) %>
             <% } %>
