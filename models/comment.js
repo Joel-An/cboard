@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var ObjectId = mongoose.Types.ObjectId;
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var commentSchema = new Schema({
   postInfo: { type: ObjectId, ref: "Post" },
@@ -23,7 +23,7 @@ var commentSchema = new Schema({
 });
 
 commentSchema.methods.isValidAuthor = function(id) {
-  return this.authorInfo.equals(id);
+  return this.authorInfo._id.equals(id);
 };
 
 module.exports = mongoose.model("Comment", commentSchema);
