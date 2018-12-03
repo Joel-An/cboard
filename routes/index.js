@@ -51,23 +51,14 @@ router.get("/done", function(req, res) {
 router.get(
   "/board/:boardName",
   wrapAsync(async function(req, res) {
-    var boardName = req.params.boardName;
-
-    let boardInfo = await Board.findOne({ nameEng: boardName });
-
-    if (boardInfo == null) {
-      let err = new Error("게시판이 존재하지 않습니다.");
-      err.status = 404;
-      throw err;
-    }
-
+    const boardName = req.params.boardName;
     let matchOpt, sortOpt;
 
-    if (boardInfo.boardType === "Best") {
+    if (boardName === "best") {
       matchOpt = { isPromoted: true };
       sortOpt = { promotedDate: -1 };
     } else {
-      matchOpt = { boardInfo: boardInfo._id };
+      matchOpt = { "boardInfo.nameEng": boardName };
       sortOpt = { date: -1 };
     }
 
@@ -92,8 +83,8 @@ router.get(
 
     res.render("board/index", {
       user: getUserInfo(req),
-      boardInfo: boardInfo,
       posts: posts,
+      boardName: boardName,
       moment: moment
     });
   })

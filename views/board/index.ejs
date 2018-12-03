@@ -24,9 +24,9 @@
                     <% posts.forEach(function(item) { %>
                         <tr>
                             <td class="number text-center"><%=i%></td>
-                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
+                            <td class="title"><a href="/board/<%=boardName%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
                             <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
-                            <% if(boardInfo.boardType === "Best") {%>
+                            <% if(boardName === "Best") {%>
                                 <td class="date text-center text-muted" ><small><%=moment(item.promotedDate).format('MM/DD HH:mm')%></small></td>
                             <% } else { %>
                             <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
@@ -41,13 +41,13 @@
         </table>
 
         <hr />
-        <a class="btn btn-default pull-right" href="/write/<%=boardInfo.nameEng%>">글쓰기</a>
+        <a class="btn btn-default pull-right" href="/write/<%=boardName%>">글쓰기</a>
 
         <nav aria-label="pag" class="text-center">
             <ul class="pagination">
                 <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
                 <li class="active"><a href="#">1</a></li>
-                <li><a href="/board/<%=boardInfo.nameEng%>?page=" onclick="alert('ㅎㅎ')">2</a></li>
+                <li><a href="/board/<%=boardName%>?page=" onclick="alert('ㅎㅎ')">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
                 <li><a href="#">5</a></li>
