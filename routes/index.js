@@ -177,6 +177,20 @@ router.get(
   })
 );
 
+router.get(
+  "/myPage",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    res.render("myPage/index", {
+      user: getUserInfo(req),
+      posts: { length: 0 },
+      comments: { length: 0 },
+      boardInfo: { nameEng: "TEST" },
+      moment: moment
+    });
+  })
+);
+
 router.get("/login", function(req, res) {
   res.render("login", { user: getUserInfo(req), err: req.flash("err") });
 });
