@@ -11,6 +11,9 @@
             <thead>
                 <tr>
                     <th class="text-center">번호</th>
+                    <% if(boardName === "best") {%>
+                    <th class="text-center">게시판</th>
+                    <% } %>
                     <th>제목</th>
                     <th class="text-center">작성자</th>
                     <th class="text-center">날짜</th>
@@ -24,9 +27,12 @@
                     <% posts.forEach(function(item) { %>
                         <tr>
                             <td class="number text-center"><%=i%></td>
+                            <% if(boardName === "best") {%>
+                                <td class="text-center"><%=item.boardInfo.nameKor%></td>
+                            <% } %>
                             <td class="title"><a href="/board/<%=boardName%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
                             <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
-                            <% if(boardName === "Best") {%>
+                            <% if(boardName === "best") {%>
                                 <td class="date text-center text-muted" ><small><%=moment(item.promotedDate).format('MM/DD HH:mm')%></small></td>
                             <% } else { %>
                             <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
