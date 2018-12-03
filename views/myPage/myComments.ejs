@@ -11,7 +11,7 @@
         <% if(comments.length > 0) { %>
             <% comments.forEach(function(item) { %>
                 <tr>
-                    <td class="text-center"><%=item.boardInfo.boardEng%></td>
+                    <td class="text-center"><a href="/board/mycomments/<%=item.postInfo._id%>"><%=item.contents%></a></td>
                     <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
                     <td class="viewed text-center"><%=item.upVotes%></td>
                     </tr>

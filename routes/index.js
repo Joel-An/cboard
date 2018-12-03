@@ -184,11 +184,12 @@ router.get(
       }
     ]);
 
+    const myComments = await Comment.find({ "authorInfo._id": req.user._id });
+
     res.render("myPage/index", {
       user: getUserInfo(req),
-      posts: { length: 0 },
-      comments: { length: 0 },
-      boardInfo: { nameEng: "TEST" },
+      posts: myPosts,
+      comments: myComments,
       moment: moment
     });
   })
