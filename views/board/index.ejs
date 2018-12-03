@@ -14,6 +14,7 @@
                     <th>제목</th>
                     <th class="text-center">작성자</th>
                     <th class="text-center">날짜</th>
+                    <th class="text-center">추천수</th>
                     <th class="text-center">조회수</th>
                 </tr>
             </thead>
@@ -23,10 +24,11 @@
                     <% posts.forEach(function(item) { %>
                         <tr>
                             <td class="number text-center"><%=i%></td>
-                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> [<%=item.commentCount%>]</a></td>
+                            <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
                             <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
-                            <td class="date text-center"><%=moment(item.date).format('YY-MM-DD')%></td>
-                            <td class="viewed text-center"><%=item.viewed%></td>
+                            <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:MM')%></small></td>
+                            <td class="viewed text-center"><%=item.upVotes%></td>
+                            <td class="viewed text-center text-muted"><%=item.viewed%></td>
                         </tr>
                         <% i-- %>
                     <% }) %>
