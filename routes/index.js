@@ -61,15 +61,19 @@ router.get(
       throw err;
     }
 
-    let matchOpt;
+    let matchOpt, sortOpt;
 
     if (boardInfo.boardType === "Best") {
       matchOpt = { isPromoted: true };
-    } else matchOpt = { boardInfo: boardInfo._id };
+      sortOpt = { promotedDate: -1 };
+    } else {
+      matchOpt = { boardInfo: boardInfo._id };
+      sortOpt = { date: -1 };
+    }
 
     let posts = await Post.aggregate([
       { $match: matchOpt },
-      { $sort: { date: -1 } },
+      { $sort: sortOpt },
       {
         $lookup: {
           from: "comments",
