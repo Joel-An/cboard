@@ -246,7 +246,8 @@ router.post(
   wrapAsync(async function(req, res) {
     const comment = new Comment();
 
-    comment.authorInfo = mongoose.Types.ObjectId(req.user._id);
+    comment.authorInfo._id = mongoose.Types.ObjectId(req.user._id);
+    comment.authorInfo.name = req.user.name;
     comment.postInfo = mongoose.Types.ObjectId(req.body.postId);
     comment.parentComment = mongoose.Types.ObjectId(req.body.commentId);
     comment.contents = req.body.contents;
