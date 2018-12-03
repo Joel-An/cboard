@@ -61,10 +61,20 @@ router.get(
       throw err;
     }
 
-    let posts = await Post.find({ boardInfo: boardInfo._id }).populate({
-      path: "authorInfo",
-      select: "name"
-    });
+    let posts = await Post.aggregate([
+      { $match: { boardInfo: boardInfo._id } },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "postInfo",
+          as: "comments"
+        }
+      },
+      {
+        $addFields: { commentCount: { $size: "$comments" } }
+      }
+    ]);
 
     req.session.lastVisitedBoard = req.url;
     req.session.save();
