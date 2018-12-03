@@ -26,7 +26,7 @@
                             <td class="number text-center"><%=i%></td>
                             <td class="title"><a href="/board/<%=boardInfo.nameEng%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
                             <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
-                            <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:MM')%></small></td>
+                            <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
                             <td class="viewed text-center"><%=item.upVotes%></td>
                             <td class="viewed text-center text-muted"><%=item.viewed%></td>
                         </tr>
