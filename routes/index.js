@@ -142,7 +142,8 @@ router.get(
     res.render("post/write", {
       user: getUserInfo(req),
       boardList: boardInfo,
-      selectedBoard: selectedBoard
+      selectedBoard: selectedBoard,
+      moment: moment
     });
   })
 );
