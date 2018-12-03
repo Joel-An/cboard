@@ -3,7 +3,11 @@ var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var postSchema = new Schema({
-  boardInfo: { type: ObjectId, ref: "Board" },
+  boardInfo: {
+    _id: { type: ObjectId, ref: "Board" },
+    nameEng: { type: String },
+    nameKor: { type: String }
+  },
 
   title: { type: String, required: true },
   contents: { type: String, required: true },
