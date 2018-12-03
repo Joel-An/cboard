@@ -364,4 +364,21 @@ router.put(
     res.redirect(req.session.lastVisitedPost);
   })
 );
+
+router.put(
+  "/downvote/post/:postId",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    let post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $inc: { downVotes: -1 }
+      },
+      { new: true }
+    );
+
+    res.redirect(req.session.lastVisitedPost);
+  })
+);
+
 module.exports = router;
