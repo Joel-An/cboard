@@ -16,10 +16,10 @@
                         </small>
                     </div>
                     <div class="col-xs-1 text-right">
-                        <form action="/upvote/comment/<%=comments[i].id%>?_method=PUT" method="post">
+                        <form action="/vote/comment/up/<%=comments[i].id%>?_method=PUT" method="post">
                             <input class="btn btn-info btn-xs" type="submit" value="↑" />
                         </form>                
-                        <form action="/downvote/comment/<%=comments[i].id%>?_method=PUT" method="post">
+                        <form action="/vote/comment/down/<%=comments[i].id%>?_method=PUT" method="post">
                             <input class="btn btn-warning btn-xs" type="submit" value="↓" />
                         </form> 
                     </div>
@@ -87,10 +87,10 @@
                                 </small>
                         </div>
                         <div class="col-xs-1 text-right">
-                            <form action="/upvote/comment/<%=childComments[j].id%>?_method=PUT" method="post">
+                            <form action="/vote/comment/up/<%=childComments[j].id%>?_method=PUT" method="post">
                                 <input class="btn btn-info btn-xs" type="submit" value="↑" />
                             </form>                
-                            <form action="/downvote/comment/<%=childComments[j].id%>?_method=PUT" method="post">
+                            <form action="/vote/comment/down/<%=childComments[j].id%>?_method=PUT" method="post">
                                 <input class="btn btn-warning btn-xs" type="submit" value="↓" />
                             </form> 
                         </div>

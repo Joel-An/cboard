@@ -386,6 +386,27 @@ router.put(
 );
 
 router.put(
+  "/vote/comment/:upDown/:commentId",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    let incOpt;
+    req.params.upDown == "up"
+      ? (incOpt = { upVotes: 1 })
+      : (incOpt = { downVotes: -1 });
+
+    let comment = await Comment.findByIdAndUpdate(
+      req.params.commentId,
+      {
+        $inc: incOpt
+      },
+      { new: true }
+    );
+
+    res.redirect(req.session.lastVisitedPost);
+  })
+);
+
+router.put(
   "/downvote/post/:postId",
   isLoggedin,
   wrapAsync(async function(req, res) {
