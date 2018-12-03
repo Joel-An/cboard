@@ -22,7 +22,7 @@ var postSchema = new Schema({
 });
 
 postSchema.methods.isValidAuthor = function(id) {
-  return this.authorInfo.equals(id);
+  return this.authorInfo._id.equals(id);
 };
 
 module.exports = mongoose.model("Post", postSchema);
