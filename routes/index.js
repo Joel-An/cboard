@@ -168,6 +168,22 @@ router.get(
   "/myPage",
   isLoggedin,
   wrapAsync(async function(req, res) {
+    const myPosts = await Post.aggregate([
+      { $match: { "authorInfo._id": req.user._id } },
+      { $sort: { date: -1 } },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "postInfo",
+          as: "comments"
+        }
+      },
+      {
+        $addFields: { commentCount: { $size: "$comments" } }
+      }
+    ]);
+
     res.render("myPage/index", {
       user: getUserInfo(req),
       posts: { length: 0 },
