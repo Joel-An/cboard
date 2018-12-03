@@ -16,8 +16,8 @@ var commentSchema = new Schema({
   isThisModified: { type: Boolean, default: false },
   modifiedDate: { type: Date },
 
-  like: { type: Number, default: 0 },
-  unLikes: { type: Number, default: 0 },
+  upVotes: { type: Number, default: 0 },
+  downVotes: { type: Number, default: 0 },
 
   isDeleted: { type: Boolean, default: false }
 });

@@ -17,8 +17,8 @@ var postSchema = new Schema({
 
   viewed: { type: Number, default: 0 },
 
-  like: { type: Number, default: 0 },
-  unLikes: { type: Number, default: 0 }
+  upVotes: { type: Number, default: 0 },
+  downVotes: { type: Number, default: 0 }
 });
 
 postSchema.methods.isValidAuthor = function(id) {
