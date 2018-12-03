@@ -239,7 +239,9 @@ router.post(
 
     const newPost = new Post();
 
-    newPost.boardInfo = boardInfo._id;
+    newPost.boardInfo._id = boardInfo._id;
+    newPost.boardInfo.nameKor = boardInfo.nameKor;
+    newPost.boardInfo.nameEng = boardInfo.nameEng;
     newPost.authorInfo._id = userInfo._id;
     newPost.authorInfo.name = userInfo.name;
     newPost.title = req.body.title;
