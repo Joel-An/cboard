@@ -1,29 +1,29 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
- 
- 
+var ObjectId = mongoose.Types.ObjectId;
+
 var commentSchema = new Schema({
-    postInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+  postInfo: { type: ObjectId, ref: "Post" },
 
-    contents: { type: String, required: true },
-    authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  contents: { type: String, required: true },
+  authorInfo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
-    parentComment: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' },
-    childComments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-    isChild: {type: Boolean, default: false},
+  parentComment: { type: ObjectId, ref: "Comment" },
+  childComments: [{ type: ObjectId, ref: "Comment" }],
+  isChild: { type: Boolean, default: false },
 
-    date: {type: Date, default: Date.now()},
-    isThisModified: {type: Boolean, default: false},
-    modifiedDate: {type: Date},
+  date: { type: Date, default: Date.now() },
+  isThisModified: { type: Boolean, default: false },
+  modifiedDate: { type: Date },
 
-    like: {type:Number, default: 0},
-    unLikes: {type:Number, default: 0},
+  like: { type: Number, default: 0 },
+  unLikes: { type: Number, default: 0 },
 
-    isDeleted: {type: Boolean, default: false}
+  isDeleted: { type: Boolean, default: false }
 });
 
 commentSchema.methods.isValidAuthor = function(id) {
-    return this.authorInfo.equals(id);
+  return this.authorInfo.equals(id);
 };
- 
-module.exports = mongoose.model('Comment', commentSchema);
+
+module.exports = mongoose.model("Comment", commentSchema);
