@@ -47,7 +47,6 @@
                     </form>
                     <% if(post.authorInfo._id.equals(user._id)) { %>       
                     <form action="/modify/post" method="get">
-                        <input type="hidden" name="boardName" value="<%=boardInfo.nameEng%>" />
                         <input type="hidden" name="postId" value="<%=post.id%>" />
                         <input type="submit" class="btn btn-primary pull-right" value="수정">
                     </form>
