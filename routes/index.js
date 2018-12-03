@@ -63,6 +63,7 @@ router.get(
 
     let posts = await Post.aggregate([
       { $match: { boardInfo: boardInfo._id } },
+      { $sort: { date: -1 } },
       {
         $lookup: {
           from: "comments",
