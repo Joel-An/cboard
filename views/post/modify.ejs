@@ -16,16 +16,7 @@
             <tr>
               <th colspan="1" style="background-color:#eeeeee">
                   <select name="selectedBoard" class="form-control" style="background-color:#eeeeee"> 
-                      <% if(boardList.length > 0) { %>
-                        <% boardList.forEach( function(item) { %>
-                          <% var board = item.toObject() %>
-                          <% if(board.nameEng == selectedBoard) { %>
-                            <option value="<%=board.nameEng%>" selected="selected"><%=board.nameKor%> 게시판</option>
-                          <% } else { %>
-                            <option value="<%=board.nameEng%>"><%=board.nameKor%> 게시판</option>
-                          <% } %>
-                        <% }) %>                      
-                      <% } %>                  
+                    <option selected="selected"><%=post.boardInfo.nameKor%> 게시판</option>
                   </select>
               </th>              
             </tr>
