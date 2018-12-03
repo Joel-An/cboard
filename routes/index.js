@@ -106,12 +106,12 @@ router.get(
     );
 
     if (post == null) {
-      if (boardInfo == null) {
-        let err = new Error("존재하지 않는 글입니다.");
-        err.status = 404;
-        throw err;
-      }
+      let err = new Error("존재하지 않는 글입니다.");
+      err.status = 404;
+      throw err;
     }
+
+    if (boardInfo == null) boardInfo = post.boardInfo;
 
     let comments = await Comment.find({
       postInfo: postId,
