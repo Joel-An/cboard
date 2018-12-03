@@ -25,7 +25,7 @@
         <form action="/board/<%=boardInfo.nameEng%>" method="get">
             <input type="submit" class="btn btn-primary pull-right" value="목록">
         </form>
-        <% if(user.id === post.authorInfo.id) { %>        
+        <% if(user._id.equals(post.authorInfo._id)) { %>       
         <form action="/modify/post" method="get">
             <input type="hidden" name="boardName" value="<%=boardInfo.nameEng%>" />
             <input type="hidden" name="postId" value="<%=post.id%>" />

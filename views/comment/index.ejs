@@ -7,7 +7,7 @@
                     <% if (user.userType !== "Guest") { %>
                         <button class="btn btn-secondary pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >답글</button>            
                     <% } %>
-                    <% if (user.id === comments[i].authorInfo.id) { %>
+                    <% if (user._id.equals(comments[i].authorInfo._id)) { %>
                         <div>
                             <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
                         </div>
@@ -57,7 +57,7 @@
                         <div class="col-xs-1"></div>
                         <div class="col-xs-11"><%=childComments[j].contents%></div>
                     </div>
-                    <% if (user.id == childComments[j].authorInfo.id) { %>
+                    <% if (user._id.equals(childComments[j].authorInfo._id)) { %>
                     <div class="row">
                         <div class="col-xs-3 col-xs-offset-9" >
                             <button class="btn btn-default btn-sm pull-right" value="<%=childComments[j].id %>" onclick="modify(this.value)">수정</button>
