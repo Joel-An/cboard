@@ -61,8 +61,14 @@ router.get(
       throw err;
     }
 
+    let matchOpt;
+
+    if (boardInfo.boardType === "Best") {
+      matchOpt = { isPromoted: true };
+    } else matchOpt = { boardInfo: boardInfo._id };
+
     let posts = await Post.aggregate([
-      { $match: { boardInfo: boardInfo._id } },
+      { $match: matchOpt },
       { $sort: { date: -1 } },
       {
         $lookup: {
@@ -337,4 +343,25 @@ router.put(
   })
 );
 
+router.put(
+  "/upvote/post/:postId",
+  isLoggedin,
+  wrapAsync(async function(req, res) {
+    let post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $inc: { upVotes: 1 }
+      },
+      { new: true }
+    );
+
+    if (post.upVotes >= 10 && !post.isPromoted) {
+      post.isPromoted = true;
+      post.promotedDate = Date.now();
+      await post.save();
+    }
+
+    res.redirect(req.session.lastVisitedPost);
+  })
+);
 module.exports = router;
