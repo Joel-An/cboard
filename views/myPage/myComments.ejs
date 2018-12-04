@@ -5,6 +5,7 @@
             <th class="text-center">내용</th>
             <th class="text-center">날짜</th>
             <th class="text-center">추천수</th>
+            <th class="text-center">삭제</th>
         </tr>
     </thead>
     <tbody>
@@ -14,7 +15,13 @@
                     <td class="text-center"><a href="/board/mycomments/<%=item.postInfo._id%>"><%=item.contents%></a></td>
                     <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
                     <td class="viewed text-center"><%=item.upVotes%></td>
-                    </tr>
+                    <td>
+                        <form action="/delete/comment?_method=DELETE" method="POST">
+                            <input type="hidden" name="commentId" value="<%=item.id%>" />
+                            <input type="submit" class="btn btn-sm" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
+                        </form>
+                    </td>                    
+                </tr>
                 <% }) %>
             <% } %>
     </tbody>
