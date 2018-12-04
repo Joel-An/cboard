@@ -299,6 +299,7 @@ router.delete(
     const post = await Post.findById(req.body.postId);
 
     if (post.isValidAuthor(req.user._id)) {
+      await Comment.deleteMany({ postInfo: post._id });
       await post.remove();
     }
     res.status(204);
