@@ -322,6 +322,9 @@ router.delete(
         await comment.remove();
         res.redirect(req.session.lastVisitedPost);
       } else {
+        if (!!comment.childComments.length) {
+          await Comment.deleteMany({ _id: { $in: comment.childComments } });
+        }
         await comment.remove();
         res.redirect(req.session.lastVisitedPost);
       }
