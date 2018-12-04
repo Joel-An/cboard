@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../layout/head %>
+  </head>
+  <body>    
+    <% include ../layout/header %>   
+
+    <div class="container">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">번호</th>
+                    <% if(boardName === "best") {%>
+                    <th class="text-center">게시판</th>
+                    <% } %>
+                    <th>제목</th>
+                    <th class="text-center">작성자</th>
+                    <th class="text-center">날짜</th>
+                    <th class="text-center">추천수</th>
+                    <th class="text-center">조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(posts.length > 0) { %>
+                    <% var i=posts.length; %>
+                    <% posts.forEach(function(item) { %>
+                        <tr>
+                            <td class="number text-center"><%=i%></td>
+                            <% if(boardName === "best") {%>
+                                <td class="text-center"><%=item.boardInfo.nameKor%></td>
+                            <% } %>
+                            <td class="title"><a href="/board/<%=boardName%>/<%=item._id%>"><%=item.title%> <small>[<%=item.commentCount%>]</small></a></td>
+                            <td id="author" class="author text-center"><%=item.authorInfo.name%></td>
+                            <% if(boardName === "best") {%>
+                                <td class="date text-center text-muted" ><small><%=moment(item.promotedDate).format('MM/DD HH:mm')%></small></td>
+                            <% } else { %>
+                            <td class="date text-center text-muted" ><small><%=moment(item.date).format('MM/DD HH:mm')%></small></td>
+                            <% } %>
+                            <td class="viewed text-center"><%=item.upVotes%></td>
+                            <td class="viewed text-center text-muted"><%=item.viewed%></td>
+                        </tr>
+                        <% i-- %>
+                    <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+
+        <hr />
+        <a class="btn btn-default pull-right" href="/write/<%=boardName%>">글쓰기</a>
+
+        <nav aria-label="pag" class="text-center">
+            <ul class="pagination">
+                <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="/board/<%=boardName%>?page=" onclick="alert('ㅎㅎ')">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <% include ../layout/script %>
+  </body>
+</html>

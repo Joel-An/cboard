@@ -1,0 +1,157 @@
+<% if (comments !== null) {
+    for(var i = 0; i < comments.length; i++) {%>
+        <div>
+            <div id="comment<%=comments[i].id%>" style="display:block">
+                <div class="row">
+                    <div class="col-xs-2 text-left" >
+                        <h4>@<%=comments[i].authorInfo.name%></h4>
+                    </div>
+                    <div class="col-xs-3 col-xs-offset-6 text-muted">
+                        <small>
+                        작성 시간 : <%=moment(comments[i].date).format('MM/DD HH:mm')%><br>
+                        <% if(comments[i].isThisModified) { %>
+                        수정 시간 : <%=moment(comments[i].modifiedDate).format('MM/DD HH:mm')%><br>
+                        <% } %>
+                        추천수 : <%=comments[i].upVotes %><br>
+                        </small>
+                    </div>
+                    <div class="col-xs-1 text-right">
+                        <form action="/vote/comment/up/<%=comments[i].id%>?_method=PUT" method="post">
+                            <input class="btn btn-info btn-xs" type="submit" value="↑" />
+                        </form>                
+                        <form action="/vote/comment/down/<%=comments[i].id%>?_method=PUT" method="post">
+                            <input class="btn btn-warning btn-xs" type="submit" value="↓" />
+                        </form> 
+                    </div>
+                </div>
+                <h4 id="contents" style="display:block"><%=comments[i].contents%></h4>
+                <div class="row">                    
+                    <% if (user.userType !== "Guest") { %>                    
+                    <div class="col-xs-4 col-xs-offset-8">
+                        <button class="btn btn-secondary pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >답글</button>            
+                    <% } %>
+                    <% if (comments[i].authorInfo._id.equals(user._id)) { %>
+                        <div>
+                            <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >수정</button>
+                        </div>
+                        <form action="/delete/comment?_method=DELETE" method="POST">
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default pull-right" value="삭제">
+                        </form>
+                    </div>
+                    <% } %>                    
+                </div>
+            </div>
+            <div id="modifyComment<%=comments[i].id%>" style="display:none">
+                <div>
+                    <form action="/modify/comment?_method=PUT" method="post">
+                        <div>
+                            <textarea class="form-control" style="height:50px" name="contents"><%=comments[i].contents%></textarea>                            
+                        </div>
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="submit" onclick="return confirm('수정하시겠습니까?')" class="btn btn-default pull-right" value="완료">                        
+                    </form>                                       
+                    <button class="btn btn-default pull-right" onclick="modify(this.value)" value="<%=comments[i].id %>" >취소</button>
+                </div>
+            </div>
+            <div id="replyToComment<%=comments[i].id%>" style="display:none">
+                <br><hr>
+                <form action="/reply/comment" method="post">
+                    <div style="background-color:#eeeeee; text-align:center" >
+                        답글 작성                       
+                        <textarea class="form-control" style="height:50px" name="contents"></textarea>                      
+                        <input type="submit" class="btn btn-default pull-right" value="완료">                        
+                        <input type="hidden" name="commentId" value="<%=comments[i].id%>" />
+                        <input type="hidden" name="postId" value="<%=comments[i].postInfo%>" />
+                    </div>
+                </form>
+                <button class="btn btn-default pull-right" onclick="replyToComment(this.value)" value="<%=comments[i].id %>" >취소</button>                 
+            </div>
+        </div>
+        <br>
+        <hr>
+        <% if(comments[i].childComments != null) {
+            var childComments = comments[i].childComments;
+            for(var j=0 ; j < childComments.length ; j++) { %>
+                <div id="comment<%=childComments[j].id%>" style="display:block">
+                    <div class="row">
+                        <div class="col-xs-1 text-right">ㄴ</div>
+                        <div class="col-xs-7 text-left">@<%=childComments[j].authorInfo.name%></div>
+                        <div class="col-xs-3 text-muted">
+                                <small>
+                                작성 시간 : <%=moment(childComments[j].date).format('MM/DD HH:mm')%><br>
+                                <% if(childComments[j].isThisModified) { %>
+                                수정 시간 : <%=moment(childComments[j].modifiedDate).format('MM/DD HH:mm')%><br>
+                                <% } %>
+                                추천수 : <%=childComments[j].upVotes %><br>
+                                </small>
+                        </div>
+                        <div class="col-xs-1 text-right">
+                            <form action="/vote/comment/up/<%=childComments[j].id%>?_method=PUT" method="post">
+                                <input class="btn btn-info btn-xs" type="submit" value="↑" />
+                            </form>                
+                            <form action="/vote/comment/down/<%=childComments[j].id%>?_method=PUT" method="post">
+                                <input class="btn btn-warning btn-xs" type="submit" value="↓" />
+                            </form> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-11"><%=childComments[j].contents%></div>
+                    </div>
+                    <% if (childComments[j].authorInfo._id.equals(user._id)) { %>
+                    <div class="row">
+                        <div class="col-xs-3 col-xs-offset-9" >
+                            <button class="btn btn-default btn-sm pull-right" value="<%=childComments[j].id %>" onclick="modify(this.value)">수정</button>
+                            <form action="/delete/comment?_method=DELETE" method="POST">
+                                <input type="hidden" name="commentId" value="<%=childComments[j].id%>" />
+                                <input type="submit" onclick="return confirm('삭제하시겠습니까?')" class="btn btn-default btn-sm pull-right" value="삭제">
+                            </form>                          
+                        </div>                        
+                    </div>
+                    <% } %>
+                </div>
+                <div id="modifyComment<%=childComments[j].id%>" style="display:none">
+                        <div>
+                            <form action="/modify/comment?_method=PUT" method="post">
+                                <div>
+                                    <textarea class="form-control" style="height:50px" name="contents"><%=childComments[j].contents%></textarea>                            
+                                </div>
+                                <input type="hidden" name="commentId" value="<%=childComments[j].id%>" />
+                                <input type="submit" onclick="return confirm('수정하시겠습니까?')" class="btn btn-default btn-sm pull-right" value="완료">                        
+                            </form>                                       
+                            <button class="btn btn-default btn-sm pull-right" onclick="modify(this.value)" value="<%=childComments[j].id %>" >취소</button>
+                        </div>
+                        <br>
+                    </div>
+                <hr style="height: 1px">        
+        <%  } %>
+        <% } %>
+<%}}%>
+
+<script>
+    var modify = function(id) {
+        var commentArea = document.getElementById('comment'+id)
+        var modifyingArea = document.getElementById('modifyComment'+id)        
+
+        if(commentArea.style.display === 'block') {
+            commentArea.style.display = 'none'
+            modifyingArea.style.display = 'block'
+        } else {
+            commentArea.style.display = 'block'
+            modifyingArea.style.display = 'none'
+        }        
+    }
+
+    var replyToComment = function(id) {
+        var commentArea = document.getElementById('comment'+id)
+        var replyToCommentArea = document.getElementById('replyToComment'+id)
+
+        if(replyToCommentArea.style.display == 'block') {            
+            replyToCommentArea.style.display = 'none'
+        } else {
+            replyToCommentArea.style.display = 'block'
+        } 
+    }
+
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../layout/head %>
+</head>
+
+<body>
+  <% include ../layout/header %>
+
+  <div class="container">
+    <div class="row">
+      <form action="/publish/post" method="post">
+        <table class="table table-striped" style="text-align: center">
+          <thead>
+            <tr>
+              <th colspan="1" style="background-color:#eeeeee">
+                  <select name="selectedBoard" class="form-control" style="background-color:#eeeeee"> 
+                      <% if(boardList.length > 0) { %>
+                        <% boardList.forEach( function(item) { %>
+                          <% var board = item.toObject() %>
+                          <% if(board.nameEng == selectedBoard) { %>
+                            <option value="<%=board.nameEng%>" selected="selected"><%=board.nameKor%> 게시판</option>
+                          <% } else { %>
+                            <option value="<%=board.nameEng%>"><%=board.nameKor%> 게시판</option>
+                          <% } %>
+                        <% }) %>                      
+                      <% } %>                  
+                  </select>
+              </th>              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="form-control" placeholder="제목" name="title" maxlength="50"></td>
+            </tr>            
+            <tr>
+              <td><textarea class="form-control" placeholder="내용" name="contents" maxlength="2048" style="height:350px"></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="submit" class="btn btn-primary pull-right" value="확인">
+      </form>
+    </div>
+  </div>
+
+  <% include ../layout/script %>
+</body>
+
+</html>

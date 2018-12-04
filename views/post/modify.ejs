@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../layout/head %>
+</head>
+
+<body>
+  <% include ../layout/header %>
+
+  <div class="container">
+    <div class="row">
+      <form action="/modify/post?_method=PUT" method="post">
+        <table class="table table-striped" style="text-align: center">
+          <thead>
+            <tr>
+              <th colspan="1" style="background-color:#eeeeee">
+                  <select name="selectedBoard" class="form-control" style="background-color:#eeeeee"> 
+                    <option selected="selected"><%=post.boardInfo.nameKor%> 게시판</option>
+                  </select>
+              </th>              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="form-control" value="<%=post.title%>" name="title" maxlength="50"></td>
+              <td><input type="hidden" name="postId" value="<%=post.id%>"/></td>
+            </tr>            
+            <tr>
+              <td><textarea class="form-control" name="contents" maxlength="2048" style="height:350px"><%=post.contents%></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="submit" class="btn btn-primary pull-right" value="확인">
+      </form>
+    </div>
+  </div>
+
+  <% include ../layout/script %>
+</body>
+
+</html>

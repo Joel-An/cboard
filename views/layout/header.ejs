@@ -7,10 +7,11 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">홈</a></li>
-                    <li><a href="#">1번 메뉴</a></li>
-                    <li><a href="#">2번 메뉴</a></li>
+                    <li><a href="/board/best">베스트</a></li>
+                    <li><a href="/board/free">자유</a></li>
+                    <li><a href="/board/IT">IT</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">3번 메뉴<b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">3<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">3-1번 메뉴</a></li>
                             <li><a href="#">3-2번 메뉴</a></li>
@@ -22,7 +23,7 @@
                         </ul>
                     </li>
                 </ul>
-                <% if(user=="Guest") { %>
+                <% if(user.userType==="Guest") { %>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/signup">회원가입</a></li>
                     <li><a href="/login">로그인</a></li>                    
@@ -30,7 +31,7 @@
                 <% } else { %>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a>안녕하세요 <%=user.name%>님!</a></li>
-                    <li><a href="/">회원정보</a></li>
+                    <li><a href="/myPage">My Page</a></li>
                     <li><a href="/logout">로그아웃</a></li>                    
                 </ul>
                 <% } %>
