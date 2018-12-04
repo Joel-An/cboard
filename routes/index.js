@@ -314,8 +314,11 @@ router.delete(
     if (comment.isValidAuthor(req.user._id)) {
       if (comment.isChild) {
         const parent = await Comment.findById(comment.parentComment);
-        parent.childComments.pull(comment._id);
-        await parent.save();
+        if (parent != null) {
+          parent.childComments.pull(comment._id);
+          await parent.save();
+        }
+
         await comment.remove();
         res.redirect(req.session.lastVisitedPost);
       } else {
